@@ -1,0 +1,1967 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Resource Hub — Butterfly Network</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#F0F2F5;--surface:#FFF;--surface2:#F7F8FA;--border:#E2E5EA;--border2:#CDD1D8;
+  --text:#1A1D23;--muted:#6B717D;--blue:#2563EB;--blue-lt:#EEF3FD;
+  --green:#16A34A;--green-lt:#EDFAF3;--yellow:#B45309;--yellow-lt:#FEF9EC;
+  --red:#DC2626;--red-lt:#FEF2F2;--mono:'IBM Plex Mono',monospace;
+  --header:56px;--nav-mobile:60px;
+}
+body{font-family:'IBM Plex Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:14px;line-height:1.5}
+
+/* ── HEADER ── */
+.header{background:var(--surface);border-bottom:1px solid var(--border);height:var(--header);display:flex;align-items:center;justify-content:space-between;padding:0 24px;position:sticky;top:0;z-index:100}
+.logo{display:flex;align-items:center;gap:8px;font-size:15px;font-weight:600}
+.logo-mark{width:28px;height:28px;border-radius:6px;background:var(--blue);display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;font-weight:700}
+.logo-sub{font-size:11px;color:var(--muted);font-weight:400}
+.user-badge{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted);background:var(--surface2);border:1px solid var(--border);border-radius:99px;padding:4px 10px}
+.user-dot{width:7px;height:7px;border-radius:50%;background:var(--green)}
+
+/* ── DESKTOP NAV ── */
+.desktop-nav{display:flex;gap:2px}
+.nav-tab{padding:6px 14px;border-radius:6px;font-size:13px;font-weight:500;cursor:pointer;color:var(--muted);border:none;background:none;font-family:inherit;transition:background .12s,color .12s;white-space:nowrap}
+.nav-tab:hover{background:var(--surface2);color:var(--text)}
+.nav-tab.active{background:var(--blue-lt);color:var(--blue)}
+
+/* ── MOBILE BOTTOM NAV ── */
+.mobile-nav{display:none;position:fixed;bottom:0;left:0;right:0;height:var(--nav-mobile);background:var(--surface);border-top:1px solid var(--border);z-index:100;padding:0 8px}
+.mobile-nav-inner{display:flex;height:100%;align-items:center;justify-content:space-around}
+.mobile-tab{display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 12px;border-radius:8px;cursor:pointer;border:none;background:none;font-family:inherit;color:var(--muted);font-size:10px;font-weight:500;min-width:60px;transition:color .12s}
+.mobile-tab .tab-icon{font-size:20px;line-height:1}
+.mobile-tab.active{color:var(--blue)}
+.mobile-tab.active .tab-icon-wrap{background:var(--blue-lt);border-radius:8px;padding:2px 8px}
+
+/* ── MAIN ── */
+.main{padding:24px;max-width:1100px;margin:0 auto;width:100%}
+.panel{display:none}.panel.active{display:block}
+
+/* ── CARDS ── */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:20px;margin-bottom:16px}
+.card-title{font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:14px}
+
+/* ── SECTION HEAD ── */
+.section-head{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:20px;gap:12px;flex-wrap:wrap}
+.section-head h2{font-size:18px;font-weight:600;letter-spacing:-.3px}
+.section-head p{font-size:13px;color:var(--muted);margin-top:2px}
+
+/* ── BUTTONS ── */
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:7px;font-size:13px;font-weight:500;cursor:pointer;border:none;font-family:inherit;transition:opacity .12s,background .12s;white-space:nowrap}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.btn-primary{background:var(--blue);color:#fff}
+.btn-primary:hover:not(:disabled){background:#1d4ed8}
+.btn-ghost{background:var(--surface);color:var(--text);border:1px solid var(--border)}
+.btn-ghost:hover:not(:disabled){background:var(--surface2)}
+.btn-success{background:var(--green-lt);color:var(--green);border:1px solid #bbf7d0}
+.btn-danger{background:var(--red-lt);color:var(--red);border:1px solid #fecaca}
+.btn-sm{padding:5px 10px;font-size:12px}
+.btn-full{width:100%;justify-content:center}
+
+/* ── CHIPS ── */
+.chip{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:99px;font-size:11px;font-weight:500;font-family:var(--mono)}
+.chip-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.chip-green{background:var(--green-lt);color:var(--green)}.chip-green .chip-dot{background:var(--green)}
+.chip-yellow{background:var(--yellow-lt);color:var(--yellow)}.chip-yellow .chip-dot{background:var(--yellow)}
+.chip-red{background:var(--red-lt);color:var(--red)}.chip-red .chip-dot{background:var(--red)}
+.chip-blue{background:var(--blue-lt);color:var(--blue)}.chip-blue .chip-dot{background:var(--blue)}
+.chip-grey{background:var(--surface2);color:var(--muted);border:1px solid var(--border)}
+
+/* ── TABLES ── */
+.data-table{width:100%;border-collapse:collapse}
+.data-table th{text-align:left;padding:9px 12px;font-size:11px;font-weight:600;color:var(--muted);letter-spacing:.4px;text-transform:uppercase;border-bottom:1px solid var(--border);background:var(--surface2)}
+.data-table td{padding:11px 12px;border-bottom:1px solid var(--border);vertical-align:middle}
+.data-table tr:last-child td{border-bottom:none}
+.data-table tbody tr:hover td{background:var(--surface2)}
+
+/* ── SUMMARY ROW ── */
+.summary-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px}
+.summary-item{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:14px}
+.summary-num{font-size:22px;font-weight:600;font-family:var(--mono)}
+.summary-label{font-size:11px;color:var(--muted);margin-top:2px}
+
+/* ── SYNC LOG ── */
+.sync-log{background:#0F1117;border-radius:8px;padding:14px;font-family:var(--mono);font-size:12px;color:#94A3B8;max-height:180px;overflow-y:auto;line-height:1.8}
+.log-line{display:flex;gap:10px}
+.log-time{color:#475569;flex-shrink:0}
+.log-ok{color:#4ADE80}.log-err{color:#F87171}.log-info{color:#60A5FA}.log-warn{color:#FBBF24}
+
+/* ── PROGRESS ── */
+.progress-wrap{margin:10px 0}
+.progress-bar-bg{background:var(--border);border-radius:99px;height:6px;overflow:hidden}
+.progress-bar-fill{height:100%;border-radius:99px;background:var(--blue);transition:width .4s ease}
+.progress-label{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-bottom:4px}
+
+/* ── LOADING CARDS ── */
+.people-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}
+.person-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px;cursor:pointer;transition:border-color .15s}
+.person-card:hover{border-color:var(--blue)}
+.person-card-top{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.avatar{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0}
+.person-name{font-weight:600;font-size:14px}
+.person-role{font-size:11px;color:var(--muted);margin-top:1px}
+.bar-bg{background:rgba(0,0,0,.06);border-radius:99px;height:7px;overflow:hidden;margin:6px 0 4px}
+.bar-fill{height:100%;border-radius:99px;transition:width .4s}
+.task-chips{display:flex;flex-wrap:wrap;gap:4px;margin-top:8px}
+.task-chip{background:var(--surface2);border:1px solid var(--border);border-radius:5px;padding:2px 8px;font-size:11px;color:var(--muted)}
+
+/* ── MY TASKS (MOBILE) ── */
+.task-list-item{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:10px}
+.task-list-header{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:8px}
+.task-list-name{font-weight:600;font-size:14px;line-height:1.3}
+.task-list-meta{font-size:11px;color:var(--muted);margin-top:2px}
+.task-actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+
+/* ── STATUS SELECT ── */
+.status-select{background:var(--surface2);border:1px solid var(--border);color:var(--text);border-radius:6px;padding:5px 8px;font-size:12px;font-family:inherit;outline:none}
+.status-select:focus{border-color:var(--blue)}
+
+/* ── MODAL ── */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);display:flex;align-items:flex-end;justify-content:center;z-index:200;backdrop-filter:blur(4px)}
+.modal-overlay.center{align-items:center}
+.modal{background:var(--surface);border-radius:16px 16px 0 0;padding:24px;width:100%;max-width:560px;max-height:90vh;overflow-y:auto}
+.modal-overlay.center .modal{border-radius:12px;margin:16px}
+.modal-handle{width:36px;height:4px;background:var(--border2);border-radius:99px;margin:0 auto 16px}
+.modal-title{font-size:16px;font-weight:600;margin-bottom:16px}
+.form-group{margin-bottom:12px}
+.form-group label{display:block;font-size:12px;font-weight:500;color:var(--muted);margin-bottom:4px}
+.form-input,.form-select,.form-textarea{width:100%;background:var(--surface2);border:1px solid var(--border);color:var(--text);border-radius:7px;padding:8px 10px;font-size:13px;font-family:inherit;outline:none;transition:border-color .15s}
+.form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--blue)}
+.form-textarea{min-height:70px;resize:vertical}
+.modal-actions{display:flex;gap:8px;margin-top:16px}
+.modal-actions .btn{flex:1;justify-content:center}
+
+/* ── APPROVAL CARDS ── */
+.approval-card{background:var(--surface);border:1px solid #fde68a;border-radius:10px;padding:16px;margin-bottom:10px}
+.approval-meta{font-size:12px;color:var(--muted);margin-bottom:8px}
+.approval-change{background:var(--surface2);border-radius:7px;padding:10px 12px;margin-bottom:10px;font-size:13px}
+.approval-actions{display:flex;gap:8px}
+
+/* ── ALERT ── */
+.alert{border-radius:8px;padding:10px 14px;font-size:13px;margin-bottom:12px;display:flex;align-items:flex-start;gap:8px}
+.alert-info{background:var(--blue-lt);color:#1d4ed8;border:1px solid #bfdbfe}
+.alert-success{background:var(--green-lt);color:#15803d;border:1px solid #bbf7d0}
+.alert-error{background:var(--red-lt);color:var(--red);border:1px solid #fecaca}
+
+/* ── MISC ── */
+.mono{font-family:var(--mono);font-size:12px}
+.fw500{font-weight:500}
+.muted{color:var(--muted)}
+.flex{display:flex}.gap-8{gap:8px}.gap-6{gap:6px}.mt-12{margin-top:12px}.hidden{display:none!important}
+.url-cell{max-width:280px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:block}
+@keyframes spin{to{transform:rotate(360deg)}}
+.spinner{width:13px;height:13px;border:2px solid currentColor;border-top-color:transparent;border-radius:50%;animation:spin .7s linear infinite;display:inline-block;flex-shrink:0}
+.coming-soon{background:var(--surface);border:1px dashed var(--border2);border-radius:10px;padding:48px;text-align:center;color:var(--muted)}
+.coming-soon-icon{font-size:36px;margin-bottom:10px}
+.coming-soon h3{font-size:15px;font-weight:500;color:var(--text);margin-bottom:5px}
+.coming-soon p{font-size:13px;max-width:300px;margin:0 auto}
+
+/* ── MATRIX ── */
+.matrix-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.matrix-table{border-collapse:collapse;min-width:100%}
+.matrix-table th{background:var(--surface2);border:1px solid var(--border);padding:6px 8px;font-size:11px;font-weight:600;color:var(--muted);white-space:nowrap;text-align:center}
+.matrix-table th.person-col{text-align:left;min-width:130px;position:sticky;left:0;z-index:10;background:var(--surface2)}
+.matrix-table td{border:1px solid var(--border);padding:4px;height:36px;text-align:center;vertical-align:middle;font-size:11px;font-family:var(--mono);position:relative}
+.matrix-table td.person-cell{text-align:left;padding:6px 10px;font-weight:500;font-size:12px;position:sticky;left:0;background:var(--surface);z-index:5;font-family:inherit;white-space:nowrap}
+.matrix-table tr:hover td{filter:brightness(.97)}
+.matrix-cell-bar{position:absolute;bottom:0;left:0;right:0;border-radius:2px 2px 0 0;transition:height .2s}
+.matrix-cell-val{position:relative;z-index:1;font-weight:600}
+.matrix-legend{display:flex;gap:16px;align-items:center;margin-bottom:14px;flex-wrap:wrap;font-size:11px;color:var(--muted)}
+.matrix-legend-swatch{width:16px;height:12px;border-radius:3px;display:inline-block}
+
+/* ── GANTT SIDEBAR ── */
+.gantt-sidebar{
+  width:340px;flex-shrink:0;background:var(--surface);border-left:1px solid var(--border);
+  padding:20px;overflow-y:auto;max-height:calc(100vh - 120px);position:sticky;top:56px;
+  transition:all .25s;
+}
+.gantt-sidebar.hidden{display:none}
+.sidebar-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.sidebar-title{font-size:15px;font-weight:600;letter-spacing:-.2px}
+.sidebar-close{background:none;border:none;cursor:pointer;color:var(--muted);font-size:18px;padding:2px 6px;border-radius:4px}
+.sidebar-close:hover{background:var(--surface2);color:var(--text)}
+.sidebar-section{margin-bottom:16px}
+.sidebar-section-title{font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
+.sidebar-field{margin-bottom:10px}
+.sidebar-field label{display:block;font-size:11px;color:var(--muted);font-weight:500;margin-bottom:4px}
+.sidebar-field .field-val{font-size:13px;font-weight:500;padding:6px 0;border-bottom:1px dashed var(--border);cursor:pointer;display:flex;align-items:center;justify-content:space-between}
+.sidebar-field .field-val:hover{color:var(--blue)}
+.sidebar-field .field-val .edit-hint{font-size:10px;color:var(--muted);opacity:0}
+.sidebar-field .field-val:hover .edit-hint{opacity:1}
+.sidebar-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:4px}
+.sidebar-badge{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:99px;font-size:11px;font-weight:500}
+
+/* Mobile task panel */
+.mobile-task-panel{
+  position:fixed;inset:0;background:var(--surface);z-index:150;overflow-y:auto;
+  transform:translateY(100%);transition:transform .3s cubic-bezier(.4,0,.2,1);
+}
+.mobile-task-panel.open{transform:translateY(0)}
+.mobile-panel-header{
+  position:sticky;top:0;background:var(--surface);border-bottom:1px solid var(--border);
+  padding:14px 16px;display:flex;align-items:center;gap:12px;z-index:10;
+}
+.mobile-panel-back{background:none;border:none;font-size:20px;cursor:pointer;color:var(--blue);padding:0}
+.mobile-panel-title{font-size:15px;font-weight:600;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mobile-panel-body{padding:16px}
+
+/* ── RESPONSIVE ── */
+@media(max-width:768px){
+  .desktop-nav{display:none}
+  .mobile-nav{display:flex}
+  .main{padding:16px;padding-bottom:calc(var(--nav-mobile) + 16px)}
+  .summary-row{grid-template-columns:repeat(2,1fr)}
+  .people-grid{grid-template-columns:1fr}
+  .section-head{flex-direction:column}
+  .section-head .btn{width:100%;justify-content:center}
+  .logo-sub{display:none}
+  .data-table{font-size:12px}
+  .data-table th,.data-table td{padding:8px 10px}
+  .hide-mobile{display:none!important}
+}
+@media(min-width:769px){
+  .show-mobile-only{display:none!important}
+}
+
+/* ── GANTT ── */
+.gantt-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.gantt-table{border-collapse:collapse;min-width:100%}
+.gantt-table th{background:var(--surface2);border:1px solid var(--border);padding:6px 10px;font-size:11px;font-weight:600;color:var(--muted);white-space:nowrap;text-align:center;position:sticky;top:0;z-index:10}
+.gantt-table th.task-col{text-align:left;min-width:180px;position:sticky;left:0;z-index:20;background:var(--surface2)}
+.gantt-table th.person-col{min-width:100px;position:sticky;left:180px;z-index:20;background:var(--surface2)}
+.gantt-table td{border:1px solid var(--border);padding:0;height:36px;vertical-align:middle}
+.gantt-table td.task-name-cell{padding:6px 10px;font-size:12px;font-weight:500;white-space:nowrap;max-width:220px;overflow:hidden;text-overflow:ellipsis;position:sticky;left:0;background:var(--surface);z-index:5}
+.gantt-table td.person-cell{padding:4px 8px;font-size:11px;white-space:nowrap;position:sticky;left:180px;background:var(--surface);z-index:5}
+.gantt-table tr:hover td{background:#f8faff}
+.gantt-table tr:hover td.task-name-cell,.gantt-table tr:hover td.person-cell{background:#f0f4ff}
+.gantt-bar-cell{position:relative;min-width:28px}
+.gantt-bar{height:20px;border-radius:4px;position:absolute;top:50%;transform:translateY(-50%);min-width:4px;opacity:.85;display:flex;align-items:center;padding:0 5px;font-size:10px;color:#fff;font-weight:500;white-space:nowrap;overflow:hidden;cursor:pointer;transition:opacity .15s}
+.gantt-bar:hover{opacity:1}
+.gantt-bar.conflict{box-shadow:0 0 0 2px var(--red)}
+.gantt-bar.status-complete{opacity:.5}
+.gantt-today-line{position:absolute;top:0;bottom:0;width:2px;background:var(--red);opacity:.6;pointer-events:none;z-index:8}
+.gantt-holiday{background:rgba(234,179,8,.1)}
+.gantt-weekend{background:rgba(0,0,0,.025)}
+.gantt-legend{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:14px;align-items:center}
+.gantt-legend-item{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--muted)}
+.gantt-legend-swatch{width:14px;height:14px;border-radius:3px}
+.gantt-conflict-badge{background:var(--red-lt);color:var(--red);border:1px solid #fecaca;border-radius:6px;padding:6px 12px;font-size:12px;margin-bottom:12px;display:flex;align-items:center;gap:6px}
+</style>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="logo">
+    <div class="logo-mark">R</div>
+    Resource Hub
+    <span class="logo-sub">/ Butterfly Network</span>
+  </div>
+  <nav class="desktop-nav">
+    <button class="nav-tab active" onclick="switchTab('sync',this)">People Sync</button>
+    <button class="nav-tab" onclick="switchTab('loading',this)">Loading</button>
+    <button class="nav-tab" onclick="switchTab('mytasks',this)">My Tasks</button>
+    <button class="nav-tab" onclick="switchTab('approvals',this)">Approvals <span id="approvalBadge" class="hidden" style="background:var(--red);color:#fff;border-radius:99px;padding:1px 6px;font-size:10px;margin-left:2px"></span></button>
+    <button class="nav-tab" onclick="switchTab('gantt',this)">Gantt</button>
+      <button class="nav-tab" onclick="switchTab('matrix',this)">Matrix</button>
+  </nav>
+  <div class="user-badge">
+    <span class="user-dot"></span>
+    <span id="userEmailDisplay">Loading...</span>
+  </div>
+</div>
+
+<!-- MOBILE BOTTOM NAV -->
+<div class="mobile-nav">
+  <div class="mobile-nav-inner">
+    <button class="mobile-tab active" onclick="switchTab('sync',this)">
+      <div class="tab-icon-wrap"><span class="tab-icon">🔄</span></div>
+      <span>Sync</span>
+    </button>
+    <button class="mobile-tab" onclick="switchTab('loading',this)">
+      <div class="tab-icon-wrap"><span class="tab-icon">📊</span></div>
+      <span>Loading</span>
+    </button>
+    <button class="mobile-tab" onclick="switchTab('mytasks',this)">
+      <div class="tab-icon-wrap"><span class="tab-icon">✅</span></div>
+      <span>My Tasks</span>
+    </button>
+    <button class="mobile-tab" onclick="switchTab('approvals',this)">
+      <div class="tab-icon-wrap"><span class="tab-icon">⏳</span></div>
+      <span>Approvals</span>
+    </button>
+    <button class="mobile-tab" onclick="switchTab('gantt',this)">
+      <div class="tab-icon-wrap"><span class="tab-icon">📅</span></div>
+      <span>Gantt</span>
+    </button>
+    <button class="mobile-tab" onclick="switchTab('matrix',this)">
+      <div class="tab-icon-wrap"><span class="tab-icon">🗂</span></div>
+      <span>Matrix</span>
+    </button>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- ══ TAB: PEOPLE SYNC ══ -->
+  <div class="panel active" id="panel-sync">
+    <div class="section-head">
+      <div>
+        <h2>People Sync</h2>
+        <p>Push People Directory to all active project timelines.</p>
+      </div>
+      <div class="flex gap-8">
+        <button class="btn btn-ghost" id="btnLoad" onclick="loadData()">Load Data</button>
+        <button class="btn btn-ghost" id="btnSyncTypes" onclick="runTaskTypeSync()" disabled>⟳ Sync Task Types</button>
+        <button class="btn btn-primary" id="btnSync" onclick="runSync()" disabled>↑ Sync People</button>
+      </div>
+    </div>
+    <div class="summary-row">
+      <div class="summary-item"><div class="summary-num" id="sumPeople">—</div><div class="summary-label">People</div></div>
+      <div class="summary-item"><div class="summary-num" id="sumProjects">—</div><div class="summary-label">Active Projects</div></div>
+      <div class="summary-item"><div class="summary-num" id="sumLastSync">—</div><div class="summary-label">Last Sync</div></div>
+    </div>
+    <div class="card">
+      <div class="card-title">People Directory</div>
+      <div id="peopleTableWrap"><div class="muted">Click "Load Data" to fetch from Smartsheet.</div></div>
+    </div>
+    <div class="card">
+      <div class="card-title">Active Projects</div>
+      <div id="projectTableWrap"><div class="muted">Load data to see registered projects.</div></div>
+    </div>
+    <div class="card">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+        <div class="card-title" style="margin-bottom:0">Sync Log</div>
+        <button class="btn btn-ghost btn-sm" onclick="clearLog()">Clear</button>
+      </div>
+      <div class="sync-log" id="syncLog">
+        <div class="log-line"><span class="log-time">--:--:--</span><span class="log-info">Ready. Click "Load Data" to begin.</span></div>
+      </div>
+      <div class="progress-wrap hidden" id="progressWrap">
+        <div class="progress-label"><span id="progressLabel">Syncing...</span><span id="progressPct">0%</span></div>
+        <div class="progress-bar-bg"><div class="progress-bar-fill" id="progressBar" style="width:0%"></div></div>
+      </div>
+    </div>
+    <div id="syncResult" class="hidden"></div>
+  </div>
+
+  <!-- ══ TAB: LOADING ══ -->
+  <div class="panel" id="panel-loading">
+    <div class="section-head">
+      <div><h2>Loading Dashboard</h2><p>Team capacity overview across all active projects.</p></div>
+      <button class="btn btn-ghost" onclick="loadLoading()">↻ Refresh</button>
+    </div>
+    <div id="loadingContent">
+      <div class="muted" style="padding:32px;text-align:center">Load data first from People Sync tab.</div>
+    </div>
+  </div>
+
+  <!-- ══ TAB: MY TASKS ══ -->
+  <div class="panel" id="panel-mytasks">
+    <div class="section-head">
+      <div><h2>My Tasks</h2><p>Tasks assigned to you across all active projects.</p></div>
+      <button class="btn btn-ghost" onclick="loadMyTasks()">↻ Refresh</button>
+    </div>
+    <div id="approvalNotice"></div>
+    <div id="myTasksContent">
+      <div class="muted" style="padding:32px;text-align:center">Load data first from People Sync tab.</div>
+    </div>
+  </div>
+
+  <!-- ══ TAB: APPROVALS ══ -->
+  <div class="panel" id="panel-approvals">
+    <div class="section-head">
+      <div><h2>Approvals</h2><p>Pending date change requests awaiting your review.</p></div>
+      <button class="btn btn-ghost" onclick="loadApprovals()">↻ Refresh</button>
+    </div>
+    <div id="approvalsContent">
+      <div class="muted" style="padding:32px;text-align:center">Click Refresh to load pending requests.</div>
+    </div>
+  </div>
+
+  <!-- ══ TAB: GANTT ══ -->
+  <div class="panel" id="panel-gantt">
+    <div class="section-head">
+      <div><h2>Gantt View</h2><p>Click any task to view or edit. Red border = conflict.</p></div>
+      <div class="flex gap-8" style="flex-wrap:wrap;align-items:center">
+        <select class="status-select" id="ganttPersonFilter" onchange="renderGantt()">
+          <option value="">All People</option>
+        </select>
+        <select class="status-select" id="ganttStatusFilter" onchange="renderGantt()">
+          <option value="">All Statuses</option>
+          <option>Not Started</option>
+          <option>In Progress</option>
+          <option>Complete</option>
+          <option>Blocked</option>
+        </select>
+        <button class="btn btn-ghost" onclick="loadGantt()">↻ Refresh</button>
+        <button class="btn btn-primary" onclick="openNewTaskPanel()">＋ New Task</button>
+      </div>
+    </div>
+    <div id="ganttLayout" style="display:flex;gap:0;position:relative">
+      <div id="ganttContent" style="flex:1;min-width:0;transition:margin-right .25s">
+        <div class="muted" style="padding:32px;text-align:center">Load data first from People Sync tab.</div>
+      </div>
+      <div id="ganttSidebar" class="gantt-sidebar hidden"></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ══ MODAL: Update Task ══ -->
+<div class="modal-overlay hidden" id="taskModal" onclick="closeTaskModal(event)">
+  <div class="modal">
+    <div class="modal-handle show-mobile-only"></div>
+    <div class="modal-title" id="taskModalTitle">Update Task</div>
+    <div id="taskModalBody"></div>
+  </div>
+</div>
+
+  <!-- ══ MOBILE TASK PANEL ══ -->
+<div class="mobile-task-panel" id="mobileTaskPanel">
+  <div class="mobile-panel-header">
+    <button class="mobile-panel-back" onclick="closeMobilePanel()">←</button>
+    <div class="mobile-panel-title" id="mobilePanelTitle">Task Details</div>
+    <div id="mobilePanelPMBadge"></div>
+  </div>
+  <div class="mobile-panel-body" id="mobilePanelBody"></div>
+</div>
+
+<!-- ══ TAB: MATRIX ══ -->
+  <div class="panel" id="panel-matrix">
+    <div class="section-head">
+      <div><h2>People × Date Matrix</h2><p>Daily effort % heatmap. Red = overloaded, yellow = near full.</p></div>
+      <div class="flex gap-8" style="align-items:center;flex-wrap:wrap">
+        <label style="font-size:12px;color:var(--muted)">Weeks:</label>
+        <select class="status-select" id="matrixWeeks" onchange="renderMatrix()">
+          <option value="2">2 weeks</option>
+          <option value="4" selected>4 weeks</option>
+          <option value="8">8 weeks</option>
+        </select>
+        <button class="btn btn-ghost" onclick="loadMatrix()">↻ Refresh</button>
+      </div>
+    </div>
+    <div id="matrixContent"><div class="muted" style="padding:32px;text-align:center">Load data first from People Sync tab.</div></div>
+  </div>
+
+<!-- ══ MODAL: Task Type ══ -->
+<div class="modal-overlay hidden center" id="taskTypeModal" onclick="closeTaskTypeModal(event)">
+  <div class="modal">
+    <div class="modal-title" id="taskTypeModalTitle">Set Task Type</div>
+    <div class="form-group">
+      <label>Task Type</label>
+      <select class="form-select" id="taskTypeSelect"></select>
+    </div>
+    <div id="taskTypeEffortPreview" style="background:var(--surface2);border-radius:7px;padding:10px 12px;font-size:13px;margin-bottom:4px"></div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeTaskTypeModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="saveTaskType()">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MODAL: Request Date Change ══ -->
+<div class="modal-overlay hidden" id="dateModal" onclick="closeDateModal(event)">
+  <div class="modal">
+    <div class="modal-handle show-mobile-only"></div>
+    <div class="modal-title">Request Date Change</div>
+    <div class="form-group">
+      <label>Field</label>
+      <select class="form-select" id="dateField">
+        <option value="Start Date">Start Date</option>
+        <option value="End Date">End Date</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Current Value</label>
+      <input class="form-input" id="dateOldVal" disabled>
+    </div>
+    <div class="form-group">
+      <label>Requested New Date</label>
+      <input class="form-input" type="date" id="dateNewVal">
+    </div>
+    <div class="form-group">
+      <label>Reason <span class="muted">(required)</span></label>
+      <textarea class="form-textarea" id="dateReason" placeholder="Explain why this date needs to change..."></textarea>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeDateModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="submitDateChange()">Submit Request</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ LOGIN MODAL ══ -->
+<div class="modal-overlay" id="loginModal" style="background:rgba(10,22,40,.95);backdrop-filter:blur(12px)">
+  <div style="background:var(--surface);border-radius:16px;padding:32px;width:100%;max-width:400px;margin:16px;text-align:center;box-shadow:0 24px 64px rgba(0,0,0,.4)">
+    <div style="width:52px;height:52px;border-radius:14px;background:var(--blue);display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:700;color:#fff;margin:0 auto 16px">R</div>
+    <div style="font-size:20px;font-weight:600;margin-bottom:4px">Resource Hub</div>
+    <div style="font-size:13px;color:var(--muted);margin-bottom:24px">Butterfly Network · Sign in to continue</div>
+    <div id="googleSignInBtn" style="display:flex;justify-content:center;margin-bottom:16px"></div>
+    <div id="loginStatus" style="font-size:12px;color:var(--muted)">Signing in with your Google account...</div>
+    <div id="loginError" class="hidden" style="margin-top:12px;padding:10px;background:var(--red-lt);color:var(--red);border-radius:8px;font-size:12px"></div>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════
+//  CONFIG
+// ══════════════════════════════════════════
+const PROXY_URL        = 'https://script.google.com/macros/s/AKfycbzrxMcJ-HOp-4wXtyfTnuWTsfxrx7uKDPp8g32NgHMIduOmOqj0krdVVbc8gGYQt4Gq/exec';
+const PEOPLE_SHEET_ID  = '2035830370815876';
+const PROJECT_SHEET_ID = '25347589623684';
+const PM_EMAIL          = 'pyeh@butterflynetinc.com';
+const TASKTYPES_SHEET_ID = '3799580836843396';
+const AVATAR_COLORS    = ['#3b82f6','#8b5cf6','#ec4899','#f97316','#14b8a6','#22c55e'];
+
+// ══════════════════════════════════════════
+//  STATE
+// ══════════════════════════════════════════
+let people      = [];
+let projects    = [];
+let allTasks    = [];   // [{task, person, project, sheetId, rowId, startDate, endDate, status}]
+let currentUser = null;
+let isPM        = false;
+let dataLoaded  = false;
+let activeDateTask = null;
+let taskTypes = [];  // [{taskType, keywords:[], effort}]
+
+// ══════════════════════════════════════════
+//  INIT
+// ══════════════════════════════════════════
+// ── Google OAuth ──────────────────────────────────────────
+const GOOGLE_CLIENT_ID = '555852075697-gho07ik3pe42ui9gh79vs1qajt2ocrmi.apps.googleusercontent.com';
+
+function initGoogleAuth() {
+  google.accounts.id.initialize({
+    client_id: GOOGLE_CLIENT_ID,
+    callback: handleGoogleSignIn,
+    auto_select: true,
+    cancel_on_tap_outside: false,
+  });
+  google.accounts.id.renderButton(
+    document.getElementById('googleSignInBtn'),
+    { theme: 'outline', size: 'large', text: 'signin_with', shape: 'rectangular', width: 280 }
+  );
+  google.accounts.id.prompt((notification) => {
+    if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
+      document.getElementById('loginStatus').textContent = 'Click "Sign in with Google" to continue.';
+    }
+  });
+}
+
+function handleGoogleSignIn(response) {
+  try {
+    // Decode JWT token to get user info
+    const payload = JSON.parse(atob(response.credential.split('.')[1]));
+    const email = payload.email;
+    const name  = payload.name || email.split('@')[0];
+    const picture = payload.picture || '';
+    selectUser(email, name, picture);
+  } catch(e) {
+    document.getElementById('loginError').textContent = 'Sign in failed: ' + e.message;
+    document.getElementById('loginError').classList.remove('hidden');
+  }
+}
+
+function selectUser(email, name, picture) {
+  currentUser = email;
+  isPM = (email === PM_EMAIL);
+  // Update header
+  const display = document.getElementById('userEmailDisplay');
+  display.innerHTML = picture
+    ? `<img src="${picture}" style="width:20px;height:20px;border-radius:50%;margin-right:4px"> ${name}`
+    : name;
+  document.getElementById('loginModal').classList.add('hidden');
+  renderApprovalNotice();
+  if (isPM) document.getElementById('approvalBadge').classList.remove('hidden');
+}
+
+window.onload = function() {
+  // Google Identity Services loads async
+  if (typeof google !== 'undefined') {
+    initGoogleAuth();
+  } else {
+    const script = document.createElement('script');
+    script.src = 'https://accounts.google.com/gsi/client';
+    script.onload = initGoogleAuth;
+    document.head.appendChild(script);
+  }
+};
+
+// ══════════════════════════════════════════
+//  NAV
+// ══════════════════════════════════════════
+function switchTab(tab, btn) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab,.mobile-tab').forEach(b => b.classList.remove('active'));
+  document.getElementById('panel-' + tab).classList.add('active');
+  // Activate both desktop and mobile buttons for this tab
+  document.querySelectorAll('.nav-tab,.mobile-tab').forEach(b => {
+    if (b.getAttribute('onclick') === `switchTab('${tab}',this)`) b.classList.add('active');
+  });
+  if (tab === 'loading' && dataLoaded) loadLoading();
+  if (tab === 'mytasks' && dataLoaded) loadMyTasks();
+  if (tab === 'approvals') loadApprovals();
+  if (tab === 'gantt' && dataLoaded) loadGantt();
+  if (tab === 'matrix' && dataLoaded) loadMatrix();
+}
+
+// ══════════════════════════════════════════
+//  PROXY
+// ══════════════════════════════════════════
+async function proxyGet(action, params={}) {
+  const qs = new URLSearchParams({action,...params});
+  const res = await fetch(`${PROXY_URL}?${qs}`);
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  const json = await res.json();
+  if (!json.ok) throw new Error(json.error||'Proxy error');
+  return json.data;
+}
+async function proxyPost(action, params={}, body={}) {
+  const qs = new URLSearchParams({action,...params,body:JSON.stringify(body)});
+  const res = await fetch(`${PROXY_URL}?${qs}`);
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  const json = await res.json();
+  if (!json.ok) throw new Error(json.error||'Proxy error');
+  return json.data;
+}
+
+// ══════════════════════════════════════════
+//  LOG / PROGRESS / ALERT
+// ══════════════════════════════════════════
+function log(msg,type='info'){
+  const el=document.getElementById('syncLog');
+  const now=new Date().toTimeString().slice(0,8);
+  const line=document.createElement('div');
+  line.className='log-line';
+  line.innerHTML=`<span class="log-time">${now}</span><span class="log-${type}">${msg}</span>`;
+  el.appendChild(line);el.scrollTop=el.scrollHeight;
+}
+function clearLog(){document.getElementById('syncLog').innerHTML='';}
+function setProgress(pct,label){
+  const wrap=document.getElementById('progressWrap');
+  wrap.classList.remove('hidden');
+  document.getElementById('progressBar').style.width=pct+'%';
+  document.getElementById('progressPct').textContent=pct+'%';
+  document.getElementById('progressLabel').textContent=label;
+  if(pct>=100) setTimeout(()=>wrap.classList.add('hidden'),2000);
+}
+function showAlert(type,msg){
+  const el=document.getElementById('syncResult');
+  el.className=`alert alert-${type}`;el.textContent=msg;el.classList.remove('hidden');
+}
+
+// ══════════════════════════════════════════
+//  LOAD DATA (People + Projects + Tasks)
+// ══════════════════════════════════════════
+async function loadData(){
+  const btn=document.getElementById('btnLoad');
+  btn.disabled=true;btn.innerHTML='<span class="spinner"></span> Loading...';
+  document.getElementById('syncResult').classList.add('hidden');
+  try {
+    log('Connecting to proxy...','info');
+    await proxyGet('ping');
+    log('Connected ✓','ok');
+
+    log('Fetching People Directory...','info');
+    const pSheet = await proxyGet('getSheet',{sheetId:PEOPLE_SHEET_ID});
+    people = parsePeople(pSheet);
+    log(`Loaded ${people.length} people ✓`,'ok');
+
+    log('Fetching Project Registry...','info');
+    const prSheet = await proxyGet('getSheet',{sheetId:PROJECT_SHEET_ID});
+    projects = parseProjects(prSheet);
+    log(`Loaded ${projects.length} active project(s) ✓`,'ok');
+
+    // Load tasks from each active project
+    allTasks = [];
+    for (const proj of projects) {
+      try {
+        log(`Fetching tasks from ${proj.name}...`,'info');
+        const sheetId = extractSheetId(proj.url);
+        const tSheet = await proxyGet('getSheet',{sheetId});
+        const tasks = parseTasks(tSheet, proj.name, sheetId);
+        allTasks = allTasks.concat(tasks);
+        log(`  → ${tasks.length} tasks ✓`,'ok');
+      } catch(e) {
+        log(`  → ${proj.name} failed: ${e.message}`,'warn');
+      }
+    }
+    log(`Total: ${allTasks.length} tasks across ${projects.length} project(s)`,'ok');
+
+    // Load Task Type Library
+    try {
+      log('Fetching Task Type Library...','info');
+      const ttSheet = await proxyGet('getSheet',{sheetId:TASKTYPES_SHEET_ID});
+      taskTypes = parseTaskTypes(ttSheet);
+      log(`Loaded ${taskTypes.length} task types ✓`,'ok');
+    } catch(e) {
+      log(`Task Type Library: ${e.message} (using defaults)`,'warn');
+      taskTypes = [];
+    }
+
+    renderPeopleTable();
+    renderProjectTable();
+    document.getElementById('sumPeople').textContent = people.length;
+    document.getElementById('sumProjects').textContent = projects.length;
+    document.getElementById('btnSync').disabled = false;
+    document.getElementById('btnSyncTypes').disabled = false;
+    dataLoaded = true;
+    loadLoading();
+    loadMyTasks();
+  } catch(e) {
+    log(`Error: ${e.message}`,'err');
+    showAlert('error','Failed to load: '+e.message);
+  } finally {
+    btn.disabled=false;btn.innerHTML='Load Data';
+  }
+}
+
+// ══════════════════════════════════════════
+//  PARSERS
+// ══════════════════════════════════════════
+function colMap(columns){const m={};columns.forEach(c=>{m[c.title]=c.id});return m;}
+function cellVal(row,colId){
+  const cell=(row.cells||[]).find(c=>c.columnId===colId);
+  return cell?(cell.displayValue??cell.value??null):null;
+}
+function parsePeople(sheet){
+  const cols=colMap(sheet.columns||[]);
+  return (sheet.rows||[]).map(row=>({
+    name:cellVal(row,cols['Name']),
+    email:cellVal(row,cols['Email']),
+    role:cellVal(row,cols['Role / Title']),
+    dept:cellVal(row,cols['Department']),
+    capacity:parseFloat(cellVal(row,cols['Weekly Capacity (days)'])||5),
+    skills:cellVal(row,cols['Skills']),
+    isPM:cellVal(row,cols['Is PM'])===true||cellVal(row,cols['Is PM'])==='true',
+  })).filter(p=>p.name);
+}
+function parseProjects(sheet){
+  const cols=colMap(sheet.columns||[]);
+  return (sheet.rows||[]).map(row=>({
+    name:cellVal(row,cols['Project Name']),
+    url:cellVal(row,cols['Sheet URL']),
+    active:cellVal(row,cols['Active']),
+    holidayMarker:(cellVal(row,cols['Holiday Marker'])||'').toLowerCase().split(',').map(s=>s.trim()).filter(Boolean),
+  })).filter(p=>p.name&&p.url&&p.active);
+}
+function parseTasks(sheet,projName,sheetId){
+  const cols=colMap(sheet.columns||[]);
+  // Build parentId → indentLevel map
+  const rowMap={};
+  (sheet.rows||[]).forEach(r=>{rowMap[r.id]=r;});
+  (sheet.rows||[]).forEach(r=>{
+    r._indent=0;let cur=r;
+    while(cur.parentId&&rowMap[cur.parentId]){r._indent++;cur=rowMap[cur.parentId];}
+    r._isParent=false;
+  });
+  (sheet.rows||[]).forEach(r=>{if(r.parentId&&rowMap[r.parentId])rowMap[r.parentId]._isParent=true;});
+  return (sheet.rows||[]).map(row=>({
+    name:cellVal(row,cols['Task'])??cellVal(row,cols['Task Name'])??'Untitled',
+    team:cellVal(row,cols['Team']),
+    status:cellVal(row,cols['Status']),
+    assignedTo:cellVal(row,cols['Assigned To']),
+    startDate:cellVal(row,cols['Start Date']),
+    endDate:cellVal(row,cols['End Date']),
+    duration:cellVal(row,cols['Duration']),
+    taskType:cellVal(row,cols['Task Type'])||'',
+    indent:row._indent||0,
+    isParent:row._isParent||false,
+    parentId:row.parentId||null,
+    project:projName,
+    sheetId,
+    rowId:row.id,
+    colIds:cols,
+  })).filter(t=>t.name);
+}
+function parseTaskTypes(sheet){
+  const cols=colMap(sheet.columns||[]);
+  return (sheet.rows||[]).map(row=>({
+    taskType: cellVal(row,cols['Task Type'])||'',
+    keywords: (cellVal(row,cols['Keywords'])||'').toLowerCase().split(',').map(s=>s.trim()).filter(Boolean),
+    effort:   parseFloat(cellVal(row,cols['Effort %'])||50),
+  })).filter(t=>t.taskType);
+}
+
+function getTaskEffort(taskName){
+  if(!taskTypes.length) return 50;
+  const name=(taskName||'').toLowerCase();
+  for(const tt of taskTypes){
+    if(tt.keywords.includes('*')) continue;
+    if(tt.keywords.some(k=>name.includes(k))) return tt.effort;
+  }
+  const def=taskTypes.find(t=>t.keywords.includes('*'));
+  return def?def.effort:50;
+}
+
+function getTaskEffortByType(typeName){
+  if(!typeName||!taskTypes.length) return 50;
+  const tt=taskTypes.find(t=>t.taskType===typeName);
+  return tt?tt.effort:50;
+}
+
+function isHolidayTask(task){
+  // Check against each project's holidayMarker keywords
+  const proj=projects.find(p=>p.name===task.project);
+  if(!proj||!proj.holidayMarker||!proj.holidayMarker.length) return false;
+  const taskName=(task.name||'').toLowerCase();
+  const team=(task.team||'').toLowerCase();
+  return proj.holidayMarker.some(marker=>taskName.includes(marker)||team.includes(marker));
+}
+
+function extractSheetId(url){
+  const m=decodeURIComponent(url).match(/\/sheets\/([a-zA-Z0-9]+)/);
+  return m?m[1]:url;
+}
+
+// ══════════════════════════════════════════
+//  RENDER TABLES (Sync tab)
+// ══════════════════════════════════════════
+function renderPeopleTable(){
+  document.getElementById('peopleTableWrap').innerHTML=`
+    <table class="data-table">
+      <thead><tr><th>Name</th><th class="hide-mobile">Email</th><th>Role</th><th class="hide-mobile">Capacity/wk</th><th>PM</th></tr></thead>
+      <tbody>${people.map(p=>`<tr>
+        <td class="fw500">${p.name}</td>
+        <td class="mono hide-mobile">${p.email||'—'}</td>
+        <td>${p.role||'—'}</td>
+        <td class="mono hide-mobile">${p.capacity}d</td>
+        <td>${p.isPM?'<span class="chip chip-blue"><span class="chip-dot"></span>PM</span>':'—'}</td>
+      </tr>`).join('')}</tbody>
+    </table>`;
+}
+function renderProjectTable(){
+  document.getElementById('projectTableWrap').innerHTML=`
+    <table class="data-table">
+      <thead><tr><th>Project</th><th class="hide-mobile">Sheet URL</th><th>Status</th></tr></thead>
+      <tbody>${projects.map(p=>`<tr>
+        <td class="fw500">${p.name}</td>
+        <td class="hide-mobile"><span class="mono url-cell">${p.url}</span></td>
+        <td><span class="chip chip-green"><span class="chip-dot"></span>Active</span></td>
+      </tr>`).join('')}</tbody>
+    </table>`;
+}
+
+// ══════════════════════════════════════════
+//  LOADING DASHBOARD
+// ══════════════════════════════════════════
+function loadLoading(){
+  if(!dataLoaded){return;}
+  const el=document.getElementById('loadingContent');
+  // Calculate loading per person
+  const today=new Date();
+  const cards=people.map((p,i)=>{
+    const myTasks=allTasks.filter(t=>{
+      const a=(t.assignedTo||'').toLowerCase();
+      return (a.includes((p.email||'').toLowerCase())||a.includes((p.name||'').toLowerCase()))&&!isHolidayTask(t);
+    });
+    // Sum effort % of tasks active today
+    const activeTasks=myTasks.filter(t=>{
+      if(!t.startDate||!t.endDate) return false;
+      const s=new Date(t.startDate),e=new Date(t.endDate);
+      return s<=today&&e>=today;
+    });
+    // Each task contributes its effort% to daily load
+    // 100% total = fully loaded. Over 100% = overloaded
+    const totalEffort=activeTasks.reduce((sum,t)=>{
+      const eff=t.taskType?getTaskEffortByType(t.taskType):getTaskEffort(t.name);
+      return sum+eff;
+    },0);
+    const pct=Math.min(totalEffort,150);
+    const color=AVATAR_COLORS[i%AVATAR_COLORS.length];
+    const st=totalEffort>100?{c:'var(--red)',cls:'chip-red',label:'Overloaded'}:totalEffort>=80?{c:'var(--yellow)',cls:'chip-yellow',label:'Near Full'}:{c:'var(--green)',cls:'chip-green',label:'OK'};
+    return `<div class="person-card">
+      <div class="person-card-top">
+        <div class="avatar" style="background:${color}22;color:${color}">${p.name.slice(0,2)}</div>
+        <div>
+          <div class="person-name">${p.name}</div>
+          <div class="person-role">${p.role||''} · ${p.dept||''}</div>
+        </div>
+        <span class="chip ${st.cls}" style="margin-left:auto"><span class="chip-dot"></span>${st.label}</span>
+      </div>
+      <div style="font-size:11px;color:var(--muted);margin-bottom:4px;display:flex;justify-content:space-between">
+        <span>Loading</span><span style="font-weight:600;color:${st.c}">${pct}%</span>
+      </div>
+      <div class="bar-bg"><div class="bar-fill" style="width:${Math.min(totalEffort,100)}%;background:${st.c}"></div></div>
+      <div style="font-size:11px;color:var(--muted);margin-top:4px">${activeTasks.length} active task(s) today · <strong style="color:${st.c}">${totalEffort}%</strong> total effort · ${myTasks.length} assigned total</div>
+      <div style="font-size:10px;color:var(--muted);margin-top:3px">${activeTasks.map(t=>{const e=t.taskType?getTaskEffortByType(t.taskType):getTaskEffort(t.name);return t.name.slice(0,20)+(t.name.length>20?'…':'')+' ('+e+'%)'}).join(' · ')||'No active tasks today'}</div>
+      <div class="task-chips">${myTasks.slice(0,3).map(t=>`<span class="task-chip">${t.name}</span>`).join('')}${myTasks.length>3?`<span class="task-chip">+${myTasks.length-3} more</span>`:''}</div>
+    </div>`;
+  }).join('');
+  el.innerHTML=`<div class="people-grid">${cards||'<div class="muted">No people found.</div>'}</div>`;
+}
+
+// ══════════════════════════════════════════
+//  MY TASKS
+// ══════════════════════════════════════════
+function loadMyTasks(){
+  if(!dataLoaded){return;}
+  const el=document.getElementById('myTasksContent');
+  const myEmail=currentUser||'';
+  const myTasks=allTasks.filter(t=>{
+    const a=(t.assignedTo||'').toLowerCase();
+    return a.includes(myEmail.toLowerCase());
+  });
+  if(!myTasks.length){
+    el.innerHTML=`<div class="muted" style="padding:32px;text-align:center">No tasks assigned to ${myEmail||'you'} found.</div>`;
+    return;
+  }
+  el.innerHTML=myTasks.map(t=>`
+    <div class="task-list-item">
+      <div class="task-list-header">
+        <div>
+          <div class="task-list-name">${t.name}</div>
+          <div class="task-list-meta">${t.project} · ${t.startDate||'?'} → ${t.endDate||'?'}</div>
+        </div>
+        ${statusChip(t.status)}
+      </div>
+      <div class="task-actions">
+        <select class="status-select" onchange="quickUpdateStatus('${t.sheetId}','${t.rowId}',this.value,${JSON.stringify(t.colIds).replace(/"/g,'&quot;')})">
+          ${['Not Started','In Progress','Complete','On Hold','Blocked'].map(s=>`<option ${t.status===s?'selected':''}>${s}</option>`).join('')}
+        </select>
+        <button class="btn btn-ghost btn-sm" onclick="openDateModal(${JSON.stringify(t).replace(/"/g,'&quot;')})">📅 Request Date Change</button>
+        <button class="btn btn-ghost btn-sm" onclick="openNoteModal(${JSON.stringify(t).replace(/"/g,'&quot;')})">💬 Add Note</button>
+      </div>
+    </div>`).join('');
+}
+
+function statusChip(status){
+  const map={'Complete':'chip-green','In Progress':'chip-blue','Blocked':'chip-red','On Hold':'chip-yellow','Not Started':'chip-grey'};
+  const cls=map[status]||'chip-grey';
+  return `<span class="chip ${cls}"><span class="chip-dot"></span>${status||'—'}</span>`;
+}
+
+async function quickUpdateStatus(sheetId,rowId,newStatus,colIds){
+  const statusColId=colIds['Status'];
+  if(!statusColId){alert('Status column not found');return;}
+  try {
+    await proxyPost('updateTask',{sheetId,rowId},{cells:[{columnId:parseInt(statusColId),value:newStatus}]});
+    // Update local state
+    const task=allTasks.find(t=>String(t.rowId)===String(rowId));
+    if(task) task.status=newStatus;
+    showToast('Status updated ✓');
+  } catch(e){alert('Error: '+e.message);}
+}
+
+// ══════════════════════════════════════════
+//  DATE CHANGE REQUEST
+// ══════════════════════════════════════════
+function openDateModal(task){
+  activeDateTask=task;
+  document.getElementById('dateOldVal').value=task.startDate||'';
+  document.getElementById('dateNewVal').value='';
+  document.getElementById('dateReason').value='';
+  document.getElementById('dateModal').classList.remove('hidden');
+}
+function closeDateModal(e){
+  if(!e||e.target===document.getElementById('dateModal'))
+    document.getElementById('dateModal').classList.add('hidden');
+}
+async function submitDateChange(){
+  const task=activeDateTask;
+  if(!task){return;}
+  const field=document.getElementById('dateField').value;
+  const oldValue=field==='Start Date'?task.startDate:task.endDate;
+  const newValue=document.getElementById('dateNewVal').value;
+  const reason=document.getElementById('dateReason').value.trim();
+  if(!newValue){alert('Please select a new date');return;}
+  if(!reason){alert('Please provide a reason');return;}
+  try {
+    await proxyPost('requestDateChange',{},{
+      sheetId:task.sheetId, rowId:task.rowId,
+      taskName:task.name, project:task.project,
+      field, oldValue, newValue, reason
+    });
+    document.getElementById('dateModal').classList.add('hidden');
+    showToast('Request submitted — PM will be notified ✓');
+  } catch(e){alert('Error: '+e.message);}
+}
+
+// ══════════════════════════════════════════
+//  NOTE MODAL
+// ══════════════════════════════════════════
+function openNoteModal(task){
+  document.getElementById('taskModalTitle').textContent=task.name;
+  document.getElementById('taskModalBody').innerHTML=`
+    <div class="form-group"><label>Add Note / Comment</label>
+    <textarea class="form-textarea" id="noteText" placeholder="Type your update or note..."></textarea></div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeTaskModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="submitNote('${task.sheetId}','${task.rowId}',${JSON.stringify(task.colIds).replace(/"/g,'&quot;')})">Save Note</button>
+    </div>`;
+  document.getElementById('taskModal').classList.remove('hidden');
+}
+function closeTaskModal(e){
+  if(!e||e.target===document.getElementById('taskModal'))
+    document.getElementById('taskModal').classList.add('hidden');
+}
+async function submitNote(sheetId,rowId,colIds){
+  const note=document.getElementById('noteText').value.trim();
+  if(!note){alert('Please enter a note');return;}
+  const notesColId=colIds['Notes']||colIds['Note']||colIds['Comments'];
+  if(!notesColId){alert('Notes column not found in this sheet');return;}
+  try {
+    await proxyPost('updateTask',{sheetId,rowId,callerEmail:currentUser},{cells:[{columnId:parseInt(notesColId),value:note}]});
+    document.getElementById('taskModal').classList.add('hidden');
+    showToast('Note saved ✓');
+  } catch(e){alert('Error: '+e.message);}
+}
+
+// ══════════════════════════════════════════
+//  APPROVALS (PM only)
+// ══════════════════════════════════════════
+async function loadApprovals(){
+  const el=document.getElementById('approvalsContent');
+  if(!isPM){
+    el.innerHTML=`<div class="muted" style="padding:32px;text-align:center">Only the PM (${PM_EMAIL}) can view and approve requests.</div>`;
+    return;
+  }
+  el.innerHTML='<div class="muted">Loading...</div>';
+  try {
+    const data=await proxyGet('getPendingApprovals');
+    const pending=data.pending||[];
+    const badge=document.getElementById('approvalBadge');
+    if(pending.length>0){badge.textContent=pending.length;badge.classList.remove('hidden');}
+    else{badge.classList.add('hidden');}
+    if(!pending.length){el.innerHTML=`<div class="muted" style="padding:32px;text-align:center">No pending approvals.</div>`;return;}
+    el.innerHTML=pending.map(r=>`
+      <div class="approval-card">
+        <div class="approval-meta">
+          <strong>${r.requestedBy}</strong> · ${r.requestedAt||''}
+        </div>
+        <div style="font-weight:600;margin-bottom:4px">${r.taskName} <span class="muted" style="font-weight:400">· ${r.project||''}</span></div>
+        <div class="approval-change">
+          <div style="font-size:11px;color:var(--muted);margin-bottom:4px">Field: ${r.field}</div>
+          <div style="display:flex;align-items:center;gap:8px">
+            <span style="background:var(--red-lt);color:var(--red);padding:2px 8px;border-radius:4px;font-size:12px">${r.oldValue||'—'}</span>
+            <span>→</span>
+            <span style="background:var(--green-lt);color:var(--green);padding:2px 8px;border-radius:4px;font-size:12px">${r.newValue}</span>
+          </div>
+          ${r.reason?`<div style="font-size:12px;color:var(--muted);margin-top:6px">Reason: ${r.reason}</div>`:''}
+        </div>
+        <div class="approval-actions">
+          <button class="btn btn-success btn-sm" onclick="reviewRequest(${r.rowId},'approve','${r.taskName}')">✓ Approve</button>
+          <button class="btn btn-danger btn-sm" onclick="reviewRequest(${r.rowId},'reject','${r.taskName}')">✗ Reject</button>
+        </div>
+      </div>`).join('');
+  } catch(e){el.innerHTML=`<div class="alert alert-error">Error: ${e.message}</div>`;}
+}
+
+async function reviewRequest(logRowId,decision,taskName){
+  if(!confirm(`${decision==='approve'?'Approve':'Reject'} request for "${taskName}"?`)) return;
+  try {
+    await proxyPost('reviewRequest',{},{logRowId,decision});
+    showToast(decision==='approve'?'Approved ✓':'Rejected');
+    loadApprovals();
+  } catch(e){alert('Error: '+e.message);}
+}
+
+// ══════════════════════════════════════════
+//  PEOPLE SYNC
+// ══════════════════════════════════════════
+async function runSync(){
+  if(!dataLoaded){showAlert('error','Load data first.');return;}
+  const contactOptions=people.filter(p=>p.email).map(p=>({name:p.name,email:p.email}));
+  if(!contactOptions.length){showAlert('error','No people with emails found.');return;}
+  const btn=document.getElementById('btnSync');
+  btn.disabled=true;btn.innerHTML='<span class="spinner"></span> Syncing...';
+  document.getElementById('syncResult').classList.add('hidden');
+  log(`Syncing ${contactOptions.length} contacts → ${projects.length} project(s)`,'info');
+  let ok=0,fail=0;
+  for(let i=0;i<projects.length;i++){
+    const proj=projects[i];
+    setProgress(Math.round((i/projects.length)*100),`Syncing ${proj.name}...`);
+    log(`→ ${proj.name}`,'info');
+    try {
+      const sheetData=await proxyGet('getSheet',{sheetId:encodeURIComponent(proj.url)});
+      const numericSheetId=sheetData.id;
+      if(!numericSheetId) throw new Error('Could not get sheet ID');
+      const columns=sheetData.columns||[];
+      const assignedCol=columns.find(c=>c.title==='Assigned To');
+      if(!assignedCol) throw new Error('"Assigned To" column not found');
+      await proxyPost('updateColumn',{sheetId:numericSheetId,columnId:assignedCol.id},{
+        title:'Assigned To',type:'CONTACT_LIST',index:assignedCol.index,contactOptions
+      });
+      log(`✓ ${proj.name}`,'ok');ok++;
+    } catch(e){log(`✗ ${proj.name} — ${e.message}`,'err');fail++;}
+  }
+  setProgress(100,'Done');
+  document.getElementById('sumLastSync').textContent=new Date().toLocaleTimeString();
+  if(fail===0) showAlert('success',`✓ Sync complete — ${ok} project(s) updated.`);
+  else showAlert('error',`Sync: ${ok} ok, ${fail} failed.`);
+  btn.disabled=false;btn.innerHTML='↑ Sync Now';
+}
+
+// ══════════════════════════════════════════
+//  TOAST
+// ══════════════════════════════════════════
+function showToast(msg){
+  const t=document.createElement('div');
+  t.style.cssText='position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:#1A1D23;color:#fff;padding:10px 18px;border-radius:8px;font-size:13px;z-index:300;pointer-events:none;opacity:1;transition:opacity .4s';
+  t.textContent=msg;
+  document.body.appendChild(t);
+  setTimeout(()=>{t.style.opacity='0';setTimeout(()=>t.remove(),400)},2000);
+}
+
+
+// ══════════════════════════════════════════
+//  GANTT VIEW
+// ══════════════════════════════════════════
+const PERSON_COLORS = ['#3b82f6','#8b5cf6','#ec4899','#f97316','#14b8a6','#22c55e','#f59e0b','#06b6d4'];
+// Holidays loaded dynamically from Smartsheet timeline via Holiday Marker
+
+function loadGantt() {
+  if (!dataLoaded) return;
+  // Populate person filter
+  const sel = document.getElementById('ganttPersonFilter');
+  const prev = sel.value;
+  sel.innerHTML = '<option value="">All People</option>' +
+    people.map(p => `<option value="${p.name}">${p.name}</option>`).join('');
+  if (prev) sel.value = prev;
+  renderGantt();
+}
+
+// ── Gantt collapse state ──
+const collapsedRows = new Set();
+function toggleCollapse(rowId) {
+  if (collapsedRows.has(rowId)) collapsedRows.delete(rowId);
+  else collapsedRows.add(rowId);
+  renderGantt();
+}
+function isAncestorCollapsed(task, taskMap) {
+  let cur = task;
+  while (cur.parentId) {
+    if (collapsedRows.has(String(cur.parentId))) return true;
+    cur = taskMap[cur.parentId] || {};
+    if (!cur.rowId) break;
+  }
+  return false;
+}
+
+function renderGantt() {
+  if (!dataLoaded) return;
+  const el = document.getElementById('ganttContent');
+  const personFilter = document.getElementById('ganttPersonFilter').value;
+  const statusFilter = document.getElementById('ganttStatusFilter').value;
+
+  // Build task map for hierarchy
+  const taskMap = {};
+  allTasks.forEach(t => { taskMap[t.rowId] = t; });
+
+  // Separate holidays
+  const holidayRanges = allTasks
+    .filter(t => isHolidayTask(t) && t.startDate && t.endDate)
+    .map(t => ({ name: t.name, start: t.startDate.slice(0,10), end: t.endDate.slice(0,10) }));
+
+  // Filter visible tasks
+  let tasks = allTasks.filter(t =>
+    t.startDate && t.endDate &&
+    !isHolidayTask(t) &&
+    !isAncestorCollapsed(t, taskMap)
+  );
+  if (personFilter) tasks = tasks.filter(t => {
+    const a = (t.assignedTo||'').toLowerCase();
+    return a.includes(personFilter.toLowerCase()) ||
+           a.includes((people.find(p=>p.name===personFilter)?.email||'').toLowerCase());
+  });
+  if (statusFilter) tasks = tasks.filter(t => t.status === statusFilter);
+
+  if (!tasks.length) {
+    el.innerHTML = '<div class="muted" style="padding:32px;text-align:center">No tasks match the current filters.</div>';
+    return;
+  }
+
+  // Date range
+  const allStarts = tasks.map(t => new Date(t.startDate)).filter(d => !isNaN(d));
+  const allEnds   = tasks.map(t => new Date(t.endDate)).filter(d => !isNaN(d));
+  let minDate = new Date(Math.min(...allStarts));
+  let maxDate = new Date(Math.max(...allEnds));
+  minDate.setDate(minDate.getDate() - 2);
+  maxDate.setDate(maxDate.getDate() + 2);
+
+  const days = [];
+  for (let d = new Date(minDate); d <= maxDate; d.setDate(d.getDate() + 1)) days.push(new Date(d));
+
+  const personColorMap = {};
+  people.forEach((p,i) => { personColorMap[p.email] = PERSON_COLORS[i%PERSON_COLORS.length]; personColorMap[p.name] = PERSON_COLORS[i%PERSON_COLORS.length]; });
+
+  // Conflict detection
+  const conflictRowIds = new Set();
+  for (let i = 0; i < tasks.length; i++) {
+    for (let j = i+1; j < tasks.length; j++) {
+      const a=tasks[i],b=tasks[j];
+      const aEmail=(a.assignedTo||'').toLowerCase(), bEmail=(b.assignedTo||'').toLowerCase();
+      if (!aEmail||!bEmail||aEmail!==bEmail) continue;
+      const aS=new Date(a.startDate),aE=new Date(a.endDate),bS=new Date(b.startDate),bE=new Date(b.endDate);
+      if (aS<=bE&&bS<=aE) { conflictRowIds.add(a.rowId); conflictRowIds.add(b.rowId); }
+    }
+  }
+
+  const today = new Date(); today.setHours(0,0,0,0);
+  const todayIdx = days.findIndex(d => d.toDateString() === today.toDateString());
+
+  // Month headers
+  const monthMap = {};
+  days.forEach((d,i) => {
+    const key = `${d.getFullYear()}-${d.getMonth()}`;
+    if (!monthMap[key]) monthMap[key] = { label: d.toLocaleString('en',{month:'short',year:'numeric'}), start:i, count:0 };
+    monthMap[key].count++;
+  });
+
+  // Week headers
+  const weekMap = {};
+  days.forEach((d,i) => {
+    const mon = getMonday(d); const key = mon.toISOString().slice(0,10);
+    if (!weekMap[key]) weekMap[key] = { label: formatWeek(mon), start:i, count:0 };
+    weekMap[key].count++;
+  });
+
+  const conflictCount = conflictRowIds.size;
+  let html = '';
+  if (conflictCount > 0) html += `<div class="gantt-conflict-badge">⚠ ${conflictCount} task(s) have overlapping assignments</div>`;
+
+  // Legend
+  html += '<div class="gantt-legend">';
+  people.forEach((p,i) => { const c=PERSON_COLORS[i%PERSON_COLORS.length]; html+=`<div class="gantt-legend-item"><div class="gantt-legend-swatch" style="background:${c}"></div>${p.name}</div>`; });
+  html += '<div class="gantt-legend-item"><div class="gantt-legend-swatch" style="background:rgba(234,179,8,.3);border:1px solid #fbbf24"></div>Holiday</div>';
+  html += '<div class="gantt-legend-item"><div style="width:14px;height:14px;border-radius:3px;border:2px solid var(--red)"></div>Conflict</div></div>';
+
+  html += '<div class="gantt-wrap"><table class="gantt-table"><thead>';
+  // Month row
+  html += '<tr><th class="task-col" rowspan="3">Task</th><th class="person-col" rowspan="3">Assigned To</th>';
+  Object.values(monthMap).forEach(m => { html += `<th colspan="${m.count}" style="background:#e8f0fe;color:#1d4ed8">${m.label}</th>`; });
+  html += '</tr><tr>';
+  // Week row
+  Object.values(weekMap).forEach(w => { html += `<th colspan="${w.count}" style="font-size:10px">W${w.label}</th>`; });
+  html += '</tr><tr>';
+  // Day row
+  days.forEach((d,i) => {
+    const isToday=i===todayIdx, isWeekend=d.getDay()===0||d.getDay()===6;
+    const isHoliday=isDateInHolidayRanges(d,holidayRanges);
+    const bg=isToday?'#dbeafe':isHoliday?'rgba(234,179,8,.15)':isWeekend?'rgba(0,0,0,.04)':'';
+    html += `<th style="min-width:28px;font-size:10px;${bg?'background:'+bg+';':''}${isToday?'color:#1d4ed8;':''}">${d.getDate()}</th>`;
+  });
+  html += '</tr></thead><tbody>';
+
+  // Task rows with hierarchy
+  tasks.forEach(t => {
+    const isConflict = conflictRowIds.has(t.rowId);
+    const assignedName = getPersonName(t.assignedTo);
+    const color = getPersonColor(t.assignedTo, personColorMap);
+    const tStart = new Date(t.startDate); tStart.setHours(0,0,0,0);
+    const tEnd   = new Date(t.endDate);   tEnd.setHours(23,59,59,999);
+    const indent = t.indent || 0;
+    const isCollapsed = collapsedRows.has(String(t.rowId));
+    const taskTypeLabel = t.taskType || getTaskTypeName(t.name);
+
+    // Task name cell with indent + collapse toggle
+    const indentPx = indent * 16;
+    const toggleBtn = t.isParent
+      ? `<span onclick="toggleCollapse('${t.rowId}')" style="cursor:pointer;margin-right:4px;display:inline-block;width:14px;text-align:center;color:var(--muted)">${isCollapsed ? '▶' : '▼'}</span>`
+      : `<span style="display:inline-block;width:14px;margin-right:4px"></span>`;
+    const taskTypeTag = taskTypeLabel ? `<span style="font-size:9px;background:var(--blue-lt);color:var(--blue);border-radius:3px;padding:1px 4px;margin-left:4px">${taskTypeLabel}</span>` : '';
+
+    html += `<tr>`;
+    html += `<td class="task-name-cell" style="padding-left:${8+indentPx}px" title="${t.name}">
+      ${toggleBtn}<span onclick="openTaskTypeModal(${JSON.stringify(t).replace(/"/g,'&quot;')})" style="cursor:pointer" title="Click to set Task Type">${t.name}</span>${taskTypeTag}
+    </td>`;
+    html += `<td class="person-cell">${assignedName?`<span style="display:inline-flex;align-items:center;gap:4px"><span style="width:7px;height:7px;border-radius:50%;background:${color};flex-shrink:0"></span>${assignedName}</span>`:'<span class="muted">—</span>'}</td>`;
+
+    days.forEach((d,i) => {
+      const dStart=new Date(d);dStart.setHours(0,0,0,0);
+      const dEnd=new Date(d);dEnd.setHours(23,59,59,999);
+      const isToday=i===todayIdx,isWeekend=d.getDay()===0||d.getDay()===6;
+      const isHoliday=isDateInHolidayRanges(d,holidayRanges);
+      const inRange=tStart<=dEnd&&tEnd>=dStart;
+      let bg='';
+      if(isToday) bg='background:rgba(219,234,254,.4)';
+      else if(isHoliday) bg='background:rgba(234,179,8,.08)';
+      else if(isWeekend) bg='background:rgba(0,0,0,.025)';
+
+      html += `<td class="gantt-bar-cell" style="${bg}">`;
+      if (inRange && !t.isParent) {
+        const isStart=tStart>=dStart&&tStart<=dEnd, isEnd=tEnd>=dStart&&tEnd<=dEnd;
+        const borderR=isConflict?`box-shadow:0 0 0 2px var(--red);`:'';
+        const opacity=t.status==='Complete'?'opacity:.5;':'';
+        const radius=`border-radius:${isStart?'4px':'0'} ${isEnd?'4px':'0'} ${isEnd?'4px':'0'} ${isStart?'4px':'0'}`;
+        html += `<div class="gantt-bar" style="background:${color};width:calc(100% + 1px);left:0;${borderR}${opacity}${radius};position:absolute;top:50%;transform:translateY(-50%)" title="${t.name} | ${t.startDate?.slice(0,10)} → ${t.endDate?.slice(0,10)} | ${t.status||''}"></div>`;
+      } else if (inRange && t.isParent) {
+        // Parent row: thin line across full span
+        html += `<div style="position:absolute;top:50%;transform:translateY(-50%);height:4px;width:calc(100% + 1px);background:${color};opacity:.4;border-radius:2px"></div>`;
+      }
+      html += `</td>`;
+    });
+    html += `</tr>`;
+  });
+
+  html += '</tbody></table></div>';
+  el.innerHTML = html;
+}
+
+function isDateInHolidayRanges(d, ranges) {
+  const ds = d.toISOString().slice(0,10);
+  return ranges.some(r => ds >= r.start && ds <= r.end);
+}
+
+function getMonday(d) {
+  const day = d.getDay();
+  const diff = d.getDate() - day + (day === 0 ? -6 : 1);
+  return new Date(d.getFullYear(), d.getMonth(), diff);
+}
+function formatWeek(mon) {
+  return `${mon.getMonth()+1}/${mon.getDate()}`;
+}
+function getPersonName(assignedTo) {
+  if (!assignedTo) return '';
+  const p = people.find(p => (assignedTo||'').toLowerCase().includes(p.email.toLowerCase()) || (assignedTo||'').toLowerCase().includes(p.name.toLowerCase()));
+  return p ? p.name : assignedTo;
+}
+function getPersonColor(assignedTo, colorMap) {
+  if (!assignedTo) return '#94a3b8';
+  for (const [key, color] of Object.entries(colorMap)) {
+    if ((assignedTo||'').toLowerCase().includes(key.toLowerCase())) return color;
+  }
+  return '#94a3b8';
+}
+
+
+// ══════════════════════════════════════════
+//  TASK TYPE MODAL (from Gantt)
+// ══════════════════════════════════════════
+let activeTaskTypeTask = null;
+
+function getTaskTypeName(taskName) {
+  if (!taskTypes.length) return '';
+  const name = (taskName||'').toLowerCase();
+  for (const tt of taskTypes) {
+    if (tt.keywords.includes('*')) continue;
+    if (tt.keywords.some(k => name.includes(k))) return tt.taskType;
+  }
+  return '';
+}
+
+function openTaskTypeModal(task) {
+  activeTaskTypeTask = task;
+  document.getElementById('taskTypeModalTitle').textContent = task.name;
+  const sel = document.getElementById('taskTypeSelect');
+  sel.innerHTML = '<option value="">— Auto detect —</option>' +
+    taskTypes.filter(t => !t.keywords.includes('*')).map(t =>
+      `<option value="${t.taskType}" ${task.taskType===t.taskType?'selected':''}>${t.taskType} (${t.effort}%)</option>`
+    ).join('');
+  updateEffortPreview();
+  sel.onchange = updateEffortPreview;
+  document.getElementById('taskTypeModal').classList.remove('hidden');
+}
+
+function updateEffortPreview() {
+  const sel = document.getElementById('taskTypeSelect');
+  const val = sel.value;
+  const el  = document.getElementById('taskTypeEffortPreview');
+  if (!val) {
+    const auto = getTaskTypeName(activeTaskTypeTask?.name||'');
+    const effort = getTaskEffort(activeTaskTypeTask?.name||'');
+    el.innerHTML = `<span class="muted">Auto-detected:</span> <strong>${auto||'Default'}</strong> → <strong style="color:var(--blue)">${effort}% effort</strong>`;
+  } else {
+    const tt = taskTypes.find(t => t.taskType === val);
+    el.innerHTML = `<strong>${val}</strong> → <strong style="color:var(--blue)">${tt?tt.effort:50}% effort</strong>`;
+  }
+}
+
+function closeTaskTypeModal(e) {
+  if (!e || e.target === document.getElementById('taskTypeModal'))
+    document.getElementById('taskTypeModal').classList.add('hidden');
+}
+
+async function saveTaskType() {
+  const task = activeTaskTypeTask;
+  if (!task) return;
+  const val = document.getElementById('taskTypeSelect').value;
+  const taskTypeColId = task.colIds['Task Type'];
+  if (!taskTypeColId) { alert('Task Type column not found in this sheet'); return; }
+  try {
+    await proxyPost('updateTask', { sheetId: task.sheetId, rowId: task.rowId }, {
+      cells: [{ columnId: parseInt(taskTypeColId), value: val || null }]
+    });
+    // Update local state
+    const t = allTasks.find(t => String(t.rowId) === String(task.rowId));
+    if (t) t.taskType = val;
+    document.getElementById('taskTypeModal').classList.add('hidden');
+    showToast('Task Type saved ✓');
+    renderGantt();
+  } catch(e) { alert('Error: ' + e.message); }
+}
+
+// ══════════════════════════════════════════
+//  TASK TYPE SYNC
+// ══════════════════════════════════════════
+async function runTaskTypeSync() {
+  if (!dataLoaded) { showAlert('error', 'Load data first.'); return; }
+  const btn = document.getElementById('btnSyncTypes');
+  btn.disabled = true; btn.innerHTML = '<span class="spinner"></span> Syncing...';
+  log('Syncing Task Types to all active projects...', 'info');
+  try {
+    const projectUrls = projects.map(p => p.url);
+    const result = await proxyPost('syncTaskTypes', {}, {
+      taskTypes: taskTypes.filter(t => !t.keywords.includes('*')),
+      projectUrls
+    });
+    const results = result.results || [];
+    const ok = results.filter(r => r.status === 'ok').length;
+    const skipped = results.filter(r => r.status === 'skipped').length;
+    log(`Task Type Sync complete: ${ok} updated, ${skipped} skipped (no Task Type column)`, 'ok');
+    showAlert('success', `✓ Task Type options synced to ${ok} project(s).`);
+  } catch(e) {
+    log('Task Type Sync error: ' + e.message, 'err');
+    showAlert('error', 'Sync failed: ' + e.message);
+  } finally {
+    btn.disabled = false; btn.innerHTML = '⟳ Sync Task Types';
+  }
+}
+
+
+// ══════════════════════════════════════════
+//  MATRIX VIEW
+// ══════════════════════════════════════════
+function loadMatrix() {
+  if (!dataLoaded) return;
+  renderMatrix();
+}
+
+function renderMatrix() {
+  if (!dataLoaded) return;
+  const el = document.getElementById('matrixContent');
+  const weeks = parseInt(document.getElementById('matrixWeeks').value) || 4;
+
+  // Build date range: today - 3 days to today + (weeks*7) days
+  const today = new Date(); today.setHours(0,0,0,0);
+  const start = new Date(today); start.setDate(start.getDate() - 3);
+  const end   = new Date(today); end.setDate(end.getDate() + weeks * 7);
+
+  const days = [];
+  for (let d = new Date(start); d <= end; d.setDate(d.getDate()+1)) days.push(new Date(d));
+
+  // For each person, for each day: sum effort% of active tasks
+  const matrix = people.map(p => {
+    const myTasks = allTasks.filter(t => {
+      const a = (t.assignedTo||'').toLowerCase();
+      return (a.includes(p.email.toLowerCase()) || a.includes(p.name.toLowerCase())) && !isHolidayTask(t) && t.startDate && t.endDate;
+    });
+    const dayData = days.map(d => {
+      const dS = new Date(d); dS.setHours(0,0,0,0);
+      const dE = new Date(d); dE.setHours(23,59,59,999);
+      const active = myTasks.filter(t => {
+        const tS = new Date(t.startDate); const tE = new Date(t.endDate);
+        return tS <= dE && tE >= dS;
+      });
+      const effort = active.reduce((s,t) => s + (t.taskType ? getTaskEffortByType(t.taskType) : getTaskEffort(t.name)), 0);
+      return { effort, tasks: active };
+    });
+    return { person: p, days: dayData };
+  });
+
+  // Holiday ranges
+  const holidayRanges = allTasks.filter(t => isHolidayTask(t) && t.startDate && t.endDate)
+    .map(t => ({ start: t.startDate.slice(0,10), end: t.endDate.slice(0,10) }));
+
+  // Build week groups for header
+  const weekGroups = [];
+  days.forEach((d, i) => {
+    const mon = getMonday(d).toISOString().slice(0,10);
+    const last = weekGroups[weekGroups.length-1];
+    if (last && last.key === mon) { last.count++; }
+    else weekGroups.push({ key: mon, label: 'W' + formatWeek(getMonday(d)), count: 1 });
+  });
+
+  let html = '<div class="matrix-legend">';
+  html += '<span><span class="matrix-legend-swatch" style="background:var(--green-lt);border:1px solid #bbf7d0"></span> < 80%</span>';
+  html += '<span><span class="matrix-legend-swatch" style="background:var(--yellow-lt);border:1px solid #fde68a"></span> 80–100%</span>';
+  html += '<span><span class="matrix-legend-swatch" style="background:var(--red-lt);border:1px solid #fecaca"></span> > 100% overloaded</span>';
+  html += '<span><span class="matrix-legend-swatch" style="background:rgba(234,179,8,.15);border:1px solid #fbbf24"></span> Holiday</span>';
+  html += '</div>';
+
+  html += '<div class="matrix-wrap"><table class="matrix-table"><thead>';
+  // Week header
+  html += '<tr><th class="person-col" rowspan="2">Person</th>';
+  weekGroups.forEach(w => { html += `<th colspan="${w.count}">${w.label}</th>`; });
+  html += '</tr><tr>';
+  // Day header
+  days.forEach(d => {
+    const isToday = d.toDateString() === today.toDateString();
+    const isWeekend = d.getDay()===0||d.getDay()===6;
+    const isHoliday = isDateInHolidayRanges(d, holidayRanges);
+    const bg = isToday?'background:#dbeafe;color:#1d4ed8;':isHoliday?'background:rgba(234,179,8,.15);':isWeekend?'background:rgba(0,0,0,.04);':'';
+    html += `<th style="min-width:32px;font-size:10px;${bg}">${d.getMonth()+1}/${d.getDate()}</th>`;
+  });
+  html += '</tr></thead><tbody>';
+
+  // Person rows
+  matrix.forEach(({ person, days: dayData }, pi) => {
+    const color = PERSON_COLORS[pi % PERSON_COLORS.length];
+    html += `<tr>`;
+    html += `<td class="person-cell"><span style="display:inline-flex;align-items:center;gap:6px"><span style="width:8px;height:8px;border-radius:50%;background:${color};flex-shrink:0"></span>${person.name}</span><div style="font-size:10px;color:var(--muted)">${person.role||''}</div></td>`;
+    dayData.forEach((cell, di) => {
+      const d = days[di];
+      const isToday = d.toDateString() === today.toDateString();
+      const isWeekend = d.getDay()===0||d.getDay()===6;
+      const isHoliday = isDateInHolidayRanges(d, holidayRanges);
+      const e = cell.effort;
+      let bg, barColor, textColor;
+      if (isHoliday || isWeekend) { bg='background:rgba(234,179,8,.08)'; barColor='transparent'; textColor='color:var(--muted)'; }
+      else if (e === 0) { bg=''; barColor='transparent'; textColor='color:var(--border2)'; }
+      else if (e > 100) { bg='background:var(--red-lt)'; barColor='var(--red)'; textColor='color:var(--red)'; }
+      else if (e >= 80) { bg='background:var(--yellow-lt)'; barColor='var(--yellow)'; textColor='color:var(--yellow)'; }
+      else { bg='background:var(--green-lt)'; barColor='var(--green)'; textColor='color:var(--green)'; }
+      if (isToday) bg += (bg?';':'')+'outline:2px solid #3b82f6;outline-offset:-2px';
+      const barH = e > 0 ? Math.min(Math.round(e/100*28), 28) : 0;
+      const taskTitles = cell.tasks.map(t=>t.name).join(', ');
+      html += `<td style="${bg}" title="${taskTitles||'No tasks'}">`;
+      if (barH > 0) html += `<div class="matrix-cell-bar" style="height:${barH}px;background:${barColor};opacity:.25"></div>`;
+      html += `<span class="matrix-cell-val" style="${textColor}">${e>0?e+'%':''}</span>`;
+      html += `</td>`;
+    });
+    html += `</tr>`;
+  });
+  html += '</tbody></table></div>';
+  el.innerHTML = html;
+}
+
+// ══════════════════════════════════════════
+//  APPROVAL — ALL CHANGES (non-PM)
+// ══════════════════════════════════════════
+
+// Override quickUpdateStatus to go through approval for non-PM
+async function quickUpdateStatus(sheetId, rowId, newStatus, colIds) {
+  const statusColId = colIds['Status'];
+  if (!statusColId) { alert('Status column not found'); return; }
+
+  if (isPM) {
+    // PM: direct update
+    try {
+      await proxyPost('updateTask', {sheetId, rowId}, {cells:[{columnId:parseInt(statusColId), value:newStatus}]});
+      const task = allTasks.find(t => String(t.rowId)===String(rowId));
+      if (task) task.status = newStatus;
+      showToast('Status updated ✓');
+    } catch(e) { alert('Error: '+e.message); }
+  } else {
+    // Non-PM: submit approval request
+    const task = allTasks.find(t => String(t.rowId)===String(rowId));
+    try {
+      await proxyPost('requestDateChange', {}, {
+        sheetId, rowId,
+        taskName: task?.name||'Unknown',
+        project: task?.project||'',
+        field: 'Status',
+        oldValue: task?.status||'',
+        newValue: newStatus,
+        reason: 'Status update request'
+      });
+      showToast('Approval request submitted — PM will be notified ✓');
+    } catch(e) { alert('Error: '+e.message); }
+  }
+}
+
+// Override saveTaskType to go through approval for non-PM
+async function saveTaskType() {
+  const task = activeTaskTypeTask;
+  if (!task) return;
+  const val = document.getElementById('taskTypeSelect').value;
+  const taskTypeColId = task.colIds['Task Type'];
+  if (!taskTypeColId) { alert('Task Type column not found'); return; }
+
+  if (isPM) {
+    try {
+      await proxyPost('updateTask', {sheetId:task.sheetId, rowId:task.rowId}, {
+        cells:[{columnId:parseInt(taskTypeColId), value:val||null}]
+      });
+      const t = allTasks.find(t=>String(t.rowId)===String(task.rowId));
+      if (t) t.taskType = val;
+      document.getElementById('taskTypeModal').classList.add('hidden');
+      showToast('Task Type saved ✓');
+      renderGantt();
+    } catch(e) { alert('Error: '+e.message); }
+  } else {
+    try {
+      await proxyPost('requestDateChange', {}, {
+        sheetId: task.sheetId, rowId: task.rowId,
+        taskName: task.name, project: task.project,
+        field: 'Task Type',
+        oldValue: task.taskType||'',
+        newValue: val,
+        reason: 'Task Type update request'
+      });
+      document.getElementById('taskTypeModal').classList.add('hidden');
+      showToast('Approval request submitted ✓');
+    } catch(e) { alert('Error: '+e.message); }
+  }
+}
+
+// Override submitNote to go through approval for non-PM
+async function submitNote(sheetId, rowId, colIds) {
+  const note = document.getElementById('noteText').value.trim();
+  if (!note) { alert('Please enter a note'); return; }
+  const task = allTasks.find(t => String(t.rowId)===String(rowId));
+
+  if (isPM) {
+    const notesColId = colIds['Notes']||colIds['Note']||colIds['Comments'];
+    if (!notesColId) { alert('Notes column not found'); return; }
+    try {
+      await proxyPost('updateTask', {sheetId, rowId}, {cells:[{columnId:parseInt(notesColId), value:note}]});
+      document.getElementById('taskModal').classList.add('hidden');
+      showToast('Note saved ✓');
+    } catch(e) { alert('Error: '+e.message); }
+  } else {
+    try {
+      await proxyPost('requestDateChange', {}, {
+        sheetId, rowId,
+        taskName: task?.name||'Unknown',
+        project: task?.project||'',
+        field: 'Notes',
+        oldValue: '',
+        newValue: note,
+        reason: 'Note/comment added'
+      });
+      document.getElementById('taskModal').classList.add('hidden');
+      showToast('Approval request submitted ✓');
+    } catch(e) { alert('Error: '+e.message); }
+  }
+}
+
+// ── Mobile My Tasks: show approval badge when non-PM ──
+function renderApprovalNotice() {
+  const notice = document.getElementById('approvalNotice');
+  if (!notice) return;
+  if (!isPM && currentUser && currentUser !== 'unknown') {
+    notice.innerHTML = `<div class="alert alert-info" style="margin-bottom:12px">ℹ You are logged in as <strong>${currentUser}</strong>. All changes will be sent to PM for approval.</div>`;
+  } else if (isPM) {
+    notice.innerHTML = `<div class="alert alert-success" style="margin-bottom:12px">✓ PM mode — all changes are applied directly without approval.</div>`;
+  }
+}
+
+</script>
+</body>
+</html>
+<!-- INJECTED JS: Gantt Sidebar + Task Edit + New Task -->
+<script>
+// ══════════════════════════════════════════
+//  GANTT SIDEBAR / MOBILE PANEL
+// ══════════════════════════════════════════
+let activeSidebarTask = null;
+let sidebarEditField  = null;
+
+const isMobile = () => window.innerWidth < 769;
+
+function openTaskSidebar(task) {
+  activeSidebarTask = task;
+  sidebarEditField  = null;
+  if (isMobile()) {
+    renderMobilePanel(task);
+    document.getElementById('mobileTaskPanel').classList.add('open');
+  } else {
+    renderSidebar(task);
+    document.getElementById('ganttSidebar').classList.remove('hidden');
+    document.getElementById('ganttContent').style.marginRight = '0';
+  }
+}
+
+function closeSidebar() {
+  document.getElementById('ganttSidebar').classList.add('hidden');
+  activeSidebarTask = null;
+}
+
+function closeMobilePanel() {
+  document.getElementById('mobileTaskPanel').classList.remove('open');
+  activeSidebarTask = null;
+}
+
+function taskDetailHTML(task, forMobile) {
+  const person = people.find(p =>
+    (task.assignedTo||'').toLowerCase().includes(p.email.toLowerCase()) ||
+    (task.assignedTo||'').toLowerCase().includes(p.name.toLowerCase())
+  );
+  const personColor = person ? PERSON_COLORS[people.indexOf(person) % PERSON_COLORS.length] : '#94a3b8';
+  const effortPct = task.taskType ? getTaskEffortByType(task.taskType) : getTaskEffort(task.name);
+  const st = task.status;
+  const statusColor = st==='Complete'?'var(--green)':st==='In Progress'?'var(--blue)':st==='Blocked'?'var(--red)':'var(--muted)';
+
+  const fields = [
+    { key:'Task', label:'Task Name', val: task.name, type:'text' },
+    { key:'Status', label:'Status', val: task.status||'Not Started', type:'select', opts:['Not Started','In Progress','Complete','Blocked'] },
+    { key:'Assigned To', label:'Assigned To', val: person?.name||task.assignedTo||'—', type:'contact' },
+    { key:'Task Type', label:'Task Type', val: task.taskType||'(auto)', type:'select', opts: taskTypes.filter(t=>!t.keywords.includes('*')).map(t=>t.taskType) },
+    { key:'Start Date', label:'Start Date', val: task.startDate?.slice(0,10)||'—', type:'date' },
+    { key:'End Date', label:'End Date', val: task.endDate?.slice(0,10)||'—', type:'date' },
+  ];
+
+  let html = `
+    <div style="margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid var(--border)">
+      <div style="font-size:11px;color:var(--muted);margin-bottom:4px">${task.project} · ${task.duration||''}</div>
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+        <span class="chip" style="background:${statusColor}22;color:${statusColor}"><span class="chip-dot" style="background:${statusColor}"></span>${task.status||'Not Started'}</span>
+        ${task.taskType?`<span class="chip chip-blue"><span class="chip-dot"></span>${task.taskType} · ${effortPct}%</span>`:''}
+      </div>
+    </div>
+    <div class="sidebar-section-title">Task Details</div>`;
+
+  fields.forEach(f => {
+    html += `<div class="sidebar-field">
+      <label>${f.label}</label>
+      <div class="field-val" onclick="startEditField('${f.key}',${JSON.stringify(task).replace(/"/g,'&quot;')})">
+        <span>${f.key==='Assigned To'?`<span style="display:inline-flex;align-items:center;gap:5px"><span style="width:7px;height:7px;border-radius:50%;background:${personColor};display:inline-block"></span>${f.val}</span>`:f.val}</span>
+        <span class="edit-hint">✏ edit</span>
+      </div>
+    </div>`;
+  });
+
+  html += `<div style="margin-top:16px;display:flex;flex-direction:column;gap:8px">`;
+  if (!isPM) {
+    html += `<div class="alert alert-info" style="font-size:12px">Changes will be sent to PM for approval.</div>`;
+  }
+  html += `<button class="btn btn-ghost" style="justify-content:center" onclick="openDateModal(${JSON.stringify(task).replace(/"/g,'&quot;')})">📅 Request Date Change</button>`;
+  html += `<button class="btn btn-ghost" style="justify-content:center" onclick="openNoteModal(${JSON.stringify(task).replace(/"/g,'&quot;')})">💬 Add Note</button>`;
+  html += `</div>`;
+  return html;
+}
+
+function renderSidebar(task) {
+  const el = document.getElementById('ganttSidebar');
+  el.innerHTML = `
+    <div class="sidebar-header">
+      <div class="sidebar-title">Task Details</div>
+      <button class="sidebar-close" onclick="closeSidebar()">✕</button>
+    </div>
+    <div id="sidebarBody">${taskDetailHTML(task, false)}</div>`;
+}
+
+function renderMobilePanel(task) {
+  document.getElementById('mobilePanelTitle').textContent = task.name;
+  document.getElementById('mobilePanelPMBadge').innerHTML = isPM
+    ? '<span class="chip chip-blue" style="font-size:10px"><span class="chip-dot"></span>PM</span>' : '';
+  document.getElementById('mobilePanelBody').innerHTML = taskDetailHTML(task, true);
+}
+
+// ── Edit field inline ──────────────────────────────
+function startEditField(fieldKey, task) {
+  activeSidebarTask = task;
+  const opts = {
+    'Status': ['Not Started','In Progress','Complete','Blocked'],
+    'Task Type': taskTypes.filter(t=>!t.keywords.includes('*')).map(t=>t.taskType),
+    'Assigned To': people.map(p=>p.name),
+  };
+  const dateFields = ['Start Date','End Date'];
+  const isSelect = !!opts[fieldKey];
+  const isDate   = dateFields.includes(fieldKey);
+
+  let inputHTML;
+  if (fieldKey === 'Start Date' || fieldKey === 'End Date') {
+    const curVal = fieldKey==='Start Date' ? task.startDate?.slice(0,10) : task.endDate?.slice(0,10);
+    if (!isPM) { openDateModal({...task, _forceField: fieldKey}); return; }
+    inputHTML = `<input class="form-input" type="date" id="sidebarEditInput" value="${curVal||''}">`;
+  } else if (isSelect) {
+    const curVal = fieldKey==='Assigned To'
+      ? (people.find(p=>(task.assignedTo||'').toLowerCase().includes(p.email.toLowerCase()))?.name||'')
+      : (fieldKey==='Task Type'?task.taskType:task.status)||'';
+    inputHTML = `<select class="form-select" id="sidebarEditInput">${opts[fieldKey].map(o=>`<option ${o===curVal?'selected':''}>${o}</option>`).join('')}</select>`;
+  } else {
+    inputHTML = `<input class="form-input" id="sidebarEditInput" value="${task.name||''}">`;
+  }
+
+  const container = isMobile()
+    ? document.getElementById('mobilePanelBody')
+    : document.getElementById('sidebarBody');
+
+  const editDiv = document.createElement('div');
+  editDiv.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:500;display:flex;align-items:center;justify-content:center;padding:20px';
+  const approvalNote = (!isPM && fieldKey !== 'Start Date' && fieldKey !== 'End Date')
+    ? '<div class="alert alert-info" style="margin-top:8px;font-size:12px">This change will be sent to PM for approval.</div>'
+    : '';
+  editDiv.innerHTML = `
+    <div style="background:var(--surface);border-radius:12px;padding:20px;width:100%;max-width:400px;box-shadow:0 24px 64px rgba(0,0,0,.4);display:flex;flex-direction:column;gap:0">
+      <div style="font-weight:600;font-size:15px;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between">
+        <span>Edit: ${fieldKey}</span>
+        <button style="background:none;border:none;cursor:pointer;color:var(--muted);font-size:18px" onclick="this.closest('.edit-overlay').remove()">✕</button>
+      </div>
+      ${inputHTML}
+      ${approvalNote}
+      <div style="display:flex;gap:8px;margin-top:16px">
+        <button class="btn btn-ghost" style="flex:1;justify-content:center" onclick="this.closest('.edit-overlay').remove()">Cancel</button>
+        <button class="btn btn-primary" style="flex:1;justify-content:center" id="editSubmitBtn" onclick="submitFieldEdit('${fieldKey}',${JSON.stringify(task).replace(/"/g,'&quot;')},this)">
+          ${isPM ? 'Save' : 'Submit for Approval'}
+        </button>
+      </div>
+    </div>`;
+  editDiv.className = 'edit-overlay';
+  document.body.appendChild(editDiv);
+}
+
+async function submitFieldEdit(fieldKey, task, btn) {
+  const input = document.getElementById('sidebarEditInput');
+  const newVal = input.value.trim();
+  if (!newVal) return;
+  btn.disabled = true;
+  btn.textContent = 'Saving...';
+
+  const overlay = btn.closest('.edit-overlay,.new-task-overlay');
+  const colIds = task.colIds || {};
+
+  if (isPM) {
+    // Direct update
+    try {
+      let colId = colIds[fieldKey] || colIds[fieldKey.replace(' ','')] ;
+      // Map display name back to email for Assigned To
+      let val = newVal;
+      if (fieldKey === 'Assigned To') {
+        const p = people.find(p => p.name === newVal);
+        if (p) val = p.email;
+        colId = colIds['Assigned To'];
+      }
+      if (!colId) throw new Error(`Column "${fieldKey}" not found`);
+      await proxyPost('updateTask', {sheetId: task.sheetId, rowId: task.rowId, callerEmail: currentUser}, {
+        cells: [{columnId: parseInt(colId), value: val}]
+      });
+      // Update local state
+      const t = allTasks.find(t => String(t.rowId) === String(task.rowId));
+      if (t) {
+        if (fieldKey==='Status') t.status = newVal;
+        if (fieldKey==='Task Type') t.taskType = newVal;
+        if (fieldKey==='Task') t.name = newVal;
+        if (fieldKey==='Start Date') t.startDate = newVal;
+        if (fieldKey==='End Date') t.endDate = newVal;
+        if (fieldKey==='Assigned To') t.assignedTo = val;
+        activeSidebarTask = {...t};
+      }
+      overlay.remove();
+      showToast(`${fieldKey} updated ✓`);
+      if (isMobile()) renderMobilePanel(activeSidebarTask||task);
+      else renderSidebar(activeSidebarTask||task);
+      renderGantt();
+    } catch(e) { btn.disabled=false; btn.textContent='Save'; alert('Error: '+e.message); }
+  } else {
+    // Submit approval
+    try {
+      await proxyPost('requestDateChange', {}, {
+        sheetId: task.sheetId, rowId: task.rowId,
+        taskName: task.name, project: task.project,
+        field: fieldKey,
+        oldValue: fieldKey==='Status'?task.status:fieldKey==='Task Type'?task.taskType:fieldKey==='Task'?task.name:fieldKey==='Start Date'?task.startDate?.slice(0,10):fieldKey==='End Date'?task.endDate?.slice(0,10):task.assignedTo,
+        newValue: newVal,
+        reason: `${fieldKey} change request`
+      });
+      overlay.remove();
+      showToast('Approval request submitted ✓');
+    } catch(e) { btn.disabled=false; btn.textContent='Submit for Approval'; alert('Error: '+e.message); }
+  }
+}
+
+// ══════════════════════════════════════════
+//  NEW TASK
+// ══════════════════════════════════════════
+function openNewTaskPanel() {
+  const overlay = document.createElement('div');
+  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:500;display:flex;align-items:flex-end;justify-content:center;backdrop-filter:blur(4px)';
+  overlay.className = 'new-task-overlay';
+  overlay.innerHTML = `
+    <div style="background:var(--surface);border-radius:16px 16px 0 0;padding:24px;width:100%;max-width:560px;max-height:90vh;overflow-y:auto">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+        <div style="font-size:16px;font-weight:600">${isPM ? 'New Task' : 'Request New Task'}</div>
+        <button style="background:none;border:none;cursor:pointer;font-size:18px;color:var(--muted)" onclick="this.closest('.new-task-overlay').remove()">✕</button>
+      </div>
+      ${!isPM ? '<div class="alert alert-info" style="margin-bottom:12px;font-size:12px">This request will be sent to PM for approval before being added to Smartsheet.</div>' : ''}
+      <div class="form-group"><label>Task Name *</label><input class="form-input" id="nt_name" placeholder="e.g. Review supplier samples"></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <div class="form-group"><label>Start Date *</label><input class="form-input" type="date" id="nt_start"></div>
+        <div class="form-group"><label>End Date *</label><input class="form-input" type="date" id="nt_end"></div>
+      </div>
+      <div class="form-group"><label>Assigned To</label>
+        <select class="form-select" id="nt_assigned">
+          <option value="">— Unassigned —</option>
+          ${people.map(p=>`<option value="${p.email}">${p.name}</option>`).join('')}
+        </select>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <div class="form-group"><label>Status</label>
+          <select class="form-select" id="nt_status">
+            ${['Not Started','In Progress','Complete','Blocked'].map(s=>`<option>${s}</option>`).join('')}
+          </select>
+        </div>
+        <div class="form-group"><label>Task Type</label>
+          <select class="form-select" id="nt_type">
+            <option value="">— Select —</option>
+            ${taskTypes.filter(t=>!t.keywords.includes('*')).map(t=>`<option>${t.taskType}</option>`).join('')}
+          </select>
+        </div>
+      </div>
+      <div class="form-group"><label>Project</label>
+        <select class="form-select" id="nt_project">
+          ${projects.map(p=>`<option value="${p.url}">${p.name}</option>`).join('')}
+        </select>
+      </div>
+      ${!isPM ? '<div class="form-group"><label>Reason / Notes *</label><textarea class="form-textarea" id="nt_reason" placeholder="Why is this task needed?"></textarea></div>' : ''}
+      <div style="display:flex;gap:8px;margin-top:16px">
+        <button class="btn btn-ghost" style="flex:1;justify-content:center" onclick="this.closest('.edit-overlay').remove()">Cancel</button>
+        <button class="btn btn-primary" style="flex:1;justify-content:center" id="nt_submit" onclick="submitNewTask(this)">
+          ${isPM ? '＋ Add Task' : 'Submit Request'}
+        </button>
+      </div>
+    </div>`;
+  document.body.appendChild(overlay);
+}
+
+async function submitNewTask(btn) {
+  const name    = document.getElementById('nt_name')?.value.trim();
+  const start   = document.getElementById('nt_start')?.value;
+  const end     = document.getElementById('nt_end')?.value;
+  const assigned= document.getElementById('nt_assigned')?.value;
+  const status  = document.getElementById('nt_status')?.value||'Not Started';
+  const type    = document.getElementById('nt_type')?.value||'';
+  const projUrl = document.getElementById('nt_project')?.value;
+  const reason  = document.getElementById('nt_reason')?.value||'';
+
+  if (!name||!start||!end) { alert('Please fill in Task Name, Start Date and End Date'); return; }
+  if (!isPM && !reason) { alert('Please provide a reason for this request'); return; }
+
+  btn.disabled = true;
+  btn.textContent = isPM ? 'Adding...' : 'Submitting...';
+  const proj = projects.find(p => p.url === projUrl);
+
+  if (isPM) {
+    try {
+      await proxyPost('addTask', {sheetId: extractSheetId(projUrl)}, {
+        name, start, end, assigned, status, taskType: type
+      });
+      btn.closest('.edit-overlay').remove();
+      showToast('Task added ✓');
+      await loadData();
+      renderGantt();
+    } catch(e) { btn.disabled=false; btn.textContent='＋ Add Task'; alert('Error: '+e.message); }
+  } else {
+    try {
+      await proxyPost('requestDateChange', {}, {
+        sheetId: extractSheetId(projUrl), rowId: 'NEW',
+        taskName: name, project: proj?.name||'',
+        field: 'New Task',
+        oldValue: '',
+        newValue: JSON.stringify({name,start,end,assigned,status,taskType:type}),
+        reason
+      });
+      btn.closest('.edit-overlay').remove();
+      showToast('New task request submitted ✓');
+    } catch(e) { btn.disabled=false; btn.textContent='Submit Request'; alert('Error: '+e.message); }
+  }
+}
+
+// ── Update Gantt task name click to open sidebar ──────────
+// Override openTaskTypeModal to open sidebar instead
+const _origOpenTaskTypeModal = openTaskTypeModal;
+function openTaskTypeModal(task) {
+  openTaskSidebar(task);
+}
+</script>
