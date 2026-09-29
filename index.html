@@ -231,12 +231,12 @@ body{font-family:'IBM Plex Sans',sans-serif;background:var(--bg);color:var(--tex
 /* ── GANTT ── */
 .gantt-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
 .gantt-table{border-collapse:collapse;min-width:100%}
-.gantt-table th{background:var(--surface2);border:1px solid var(--border);padding:6px 10px;font-size:11px;font-weight:600;color:var(--muted);white-space:nowrap;text-align:center;position:sticky;top:0;z-index:10}
-.gantt-table th.task-col{text-align:left;min-width:180px;position:sticky;left:0;z-index:20;background:var(--surface2)}
-.gantt-table th.person-col{min-width:100px;position:sticky;left:180px;z-index:20;background:var(--surface2)}
-.gantt-table td{border:1px solid var(--border);padding:0;height:36px;vertical-align:middle}
-.gantt-table td.task-name-cell{padding:6px 10px;font-size:12px;font-weight:500;white-space:nowrap;max-width:220px;overflow:hidden;text-overflow:ellipsis;position:sticky;left:0;background:var(--surface);z-index:5}
-.gantt-table td.person-cell{padding:4px 8px;font-size:11px;white-space:nowrap;position:sticky;left:180px;background:var(--surface);z-index:5}
+.gantt-table th{background:var(--surface2);border:1px solid var(--border);padding:6px 4px;font-size:11px;font-weight:600;color:var(--muted);white-space:nowrap;text-align:center;position:sticky;top:0;z-index:10}
+.gantt-table th.task-col{text-align:left;width:160px;min-width:120px;max-width:200px;position:sticky;left:0;z-index:20;background:var(--surface2)}
+.gantt-table th.person-col{width:90px;min-width:70px;position:sticky;left:160px;z-index:20;background:var(--surface2)}
+.gantt-table td{border:1px solid var(--border);padding:0;height:34px;vertical-align:middle}
+.gantt-table td.task-name-cell{padding:4px 8px;font-size:11px;font-weight:500;white-space:nowrap;width:160px;min-width:120px;max-width:200px;overflow:hidden;text-overflow:ellipsis;position:sticky;left:0;background:var(--surface);z-index:5}
+.gantt-table td.person-cell{padding:3px 6px;font-size:11px;white-space:nowrap;width:90px;min-width:70px;position:sticky;left:160px;background:var(--surface);z-index:5}
 .gantt-table tr:hover td{background:#f8faff}
 .gantt-table tr:hover td.task-name-cell,.gantt-table tr:hover td.person-cell{background:#f0f4ff}
 .gantt-bar-cell{position:relative;min-width:28px}
@@ -1180,16 +1180,30 @@ function renderGantt() {
     return;
   }
 
-  // Date range
+  // Date range - limit on mobile
+  const isMobileView = window.innerWidth < 600;
   const allStarts = tasks.map(t => new Date(t.startDate)).filter(d => !isNaN(d));
   const allEnds   = tasks.map(t => new Date(t.endDate)).filter(d => !isNaN(d));
-  let minDate = new Date(Math.min(...allStarts));
-  let maxDate = new Date(Math.max(...allEnds));
-  minDate.setDate(minDate.getDate() - 2);
-  maxDate.setDate(maxDate.getDate() + 2);
+  let minDate, maxDate;
+  if (isMobileView) {
+    // Mobile: show 3 weeks centered on today
+    minDate = new Date(); minDate.setDate(minDate.getDate() - 7);
+    maxDate = new Date(); maxDate.setDate(maxDate.getDate() + 14);
+  } else {
+    minDate = new Date(Math.min(...allStarts));
+    maxDate = new Date(Math.max(...allEnds));
+    minDate.setDate(minDate.getDate() - 2);
+    maxDate.setDate(maxDate.getDate() + 2);
+  }
 
   const days = [];
   for (let d = new Date(minDate); d <= maxDate; d.setDate(d.getDate() + 1)) days.push(new Date(d));
+
+  // Dynamic column width based on screen size
+  const fixedColsW = window.innerWidth < 600 ? 160 : 250; // task + person cols
+  const availW = window.innerWidth - fixedColsW - 40;
+  const rawDayW = Math.floor(availW / days.length);
+  const DAY_W = Math.max(Math.min(rawDayW, 48), 20); // between 20px and 48px
 
   const personColorMap = {};
   people.forEach((p,i) => { personColorMap[p.email] = PERSON_COLORS[i%PERSON_COLORS.length]; personColorMap[p.name] = PERSON_COLORS[i%PERSON_COLORS.length]; });
@@ -1248,7 +1262,7 @@ function renderGantt() {
     const isToday=i===todayIdx, isWeekend=d.getDay()===0||d.getDay()===6;
     const isHoliday=isDateInHolidayRanges(d,holidayRanges);
     const bg=isToday?'#dbeafe':isHoliday?'rgba(234,179,8,.15)':isWeekend?'rgba(0,0,0,.04)':'';
-    html += `<th style="min-width:28px;font-size:10px;${bg?'background:'+bg+';':''}${isToday?'color:#1d4ed8;':''}">${d.getDate()}</th>`;
+    html += `<th style="width:${DAY_W}px;min-width:${DAY_W}px;font-size:10px;${bg?'background:'+bg+';':''}${isToday?'color:#1d4ed8;':''}">${d.getDate()}</th>`;
   });
   html += '</tr></thead><tbody>';
 
@@ -1957,6 +1971,20 @@ async function submitNewTask(btn) {
     } catch(e) { btn.disabled=false; btn.textContent='Submit Request'; alert('Error: '+e.message); }
   }
 }
+
+// ── Re-render Gantt on window resize
+let ganttResizeTimer;
+window.addEventListener('resize', () => {
+  clearTimeout(ganttResizeTimer);
+  ganttResizeTimer = setTimeout(() => {
+    if (document.getElementById('panel-gantt').classList.contains('active') && dataLoaded) {
+      renderGantt();
+    }
+    if (document.getElementById('panel-matrix')?.classList.contains('active') && dataLoaded) {
+      renderMatrix();
+    }
+  }, 300);
+});
 
 // ── Update Gantt task name click to open sidebar ──────────
 // Override openTaskTypeModal to open sidebar instead
